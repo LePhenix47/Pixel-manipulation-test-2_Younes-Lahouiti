@@ -114,15 +114,11 @@ export class PixelParticle {
     this.originY = pixelY;
     this.color = pixelColor;
 
-    const canvasOverflowsWindow: boolean =
-      this.width > window.innerWidth || this.height > window.innerHeight;
-    if (canvasOverflowsWindow) {
-      this.x = this.originX;
-      this.y = this.originY;
-    } else {
-      this.x = getRandomNumber(0, this.width);
-      this.y = getRandomNumber(0, this.height);
-    }
+    this.x = this.originX;
+    this.y = this.originY;
+
+    // this.x = getRandomNumber(0, this.width);
+    // this.y = getRandomNumber(0, this.height);
 
     this.gap = pixelGap;
 
@@ -151,18 +147,15 @@ export class PixelParticle {
    * @returns {void}
    */
   update(mouseX: number, mouseY: number, mouseRadius = 20_000): void {
-    //We get the top left coordinates of our canvas
-    const { x, y }: DOMRect = this.context.canvas.getBoundingClientRect();
-
-    this.mouseParticleDistanceX = mouseX - this.x - x;
-    this.mouseParticleDistanceY = mouseY - this.y - y;
+    this.mouseParticleDistanceX = mouseX - this.x;
+    this.mouseParticleDistanceY = mouseY - this.y;
 
     //We're not going to compute the hypothenuse with `Math.sqrt()` for performance reasons
     this.mouseTotalDistance =
       this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;
 
     //Because we're not properly computing the hypotenuse,
-    //the mouse radius value must be high
+    //the mouse radius must have a high value
     const isCloseToMouse: boolean = this.mouseTotalDistance < mouseRadius;
     if (isCloseToMouse) {
       /*
@@ -174,7 +167,7 @@ export class PixelParticle {
              /     |
             /______|
        */
-      //We have the dx and dy but NOT the hypothenuse of the triangle traced from the mouse to the particle
+      //We have the dx and dy but NOT the hypothenuse (we have h²) of the triangle traced from the mouse to the particle
       //And we want to get angle of the circle on the adjacent-hypothenuse side
       this.angle = Math.atan2(
         this.mouseParticleDistanceY,

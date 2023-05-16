@@ -1,4 +1,4 @@
-import { get2DContext } from "../../functions/canvas.functions";
+import { clearOldPaint, get2DContext } from "../../functions/canvas.functions";
 import { log } from "../../functions/console.functions";
 import { PixelParticle } from "../particles/pixel-particle.class";
 
@@ -43,29 +43,82 @@ export class PixelEffect {
 
   /**
    * The text that is used as the source of the pixels for the animation.
-   * @type {HTMLImageElement}
+   *
+   * @type {string}
    */
   text: string;
+
+  /**
+   * The metrics of the text used for rendering.
+   *
+   * @type {TextMetrics}
+   */
   textMetrics: TextMetrics;
+
+  /**
+   * The x-coordinate of the text position.
+   *
+   * @type {number}
+   */
   textX: number;
+
+  /**
+   * The y-coordinate of the text position.
+   *
+   * @type {number}
+   */
   textY: number;
 
   /**
-   * Creates an instance of PixelEffect.
+   * The color of the text.
+   *
+   * @type {string}
+   */
+  color: string;
+
+  /**
+   * The font size of the text.
+   *
+   * @type {number}
+   */
+  fontSize: number;
+
+  /**
+   * The font family of the text.
+   *
+   * @type {string}
+   */
+  fontFamily: string;
+
+  /**
+   * Creates an instance of the PixelEffect class.
    *
    * @param {HTMLCanvasElement} canvas - The HTML canvas element on which the effect is applied.
-   * @param {HTMLImageElement} imageElement - The HTML image element that is used as the source of the pixels for the animation.
-   *
-   * @constructor
+   * @param {string} text - The text that is used as the source of the pixels for the animation.
+   * @param {string} color - The color of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @param {string} fontFamily - The font family of the text.
    */
-  constructor(canvas: HTMLCanvasElement, text: string) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    text: string,
+    color: string,
+    fontSize: number,
+    fontFamily: string
+  ) {
     this.canvas = canvas;
     this.context = get2DContext(canvas);
 
     this.particlesArray = [];
     this.text = text;
 
+    this.color = color;
+    this.fontSize = fontSize;
+    this.fontFamily = fontFamily;
+
+    this.createText();
     this.convertToPixels(2);
+    log(this);
   }
 
   /**
@@ -73,9 +126,9 @@ export class PixelEffect {
    *
    * @returns {void}
    */
-  createText(color: string, fontSize: number, fontFamily: number): void {
-    this.context.fillStyle = color;
-    this.context.font = `${fontSize}px ${fontFamily}`;
+  createText(): void {
+    this.context.fillStyle = this.color;
+    this.context.font = `${this.fontSize}px ${this.fontFamily}`;
 
     this.textMetrics = this.context.measureText(this.text);
 
@@ -83,6 +136,7 @@ export class PixelEffect {
     this.textY = this.canvas.height / 2;
 
     this.context.fillText(this.text, this.textX, this.textY);
+    log(this.context);
 
     this.pixelsData = this.context.getImageData(
       0,
@@ -110,7 +164,8 @@ export class PixelEffect {
    */
   private convertToPixels(cellSize: number = 1): void {
     //We remove the static image on our <canvas>
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    clearOldPaint(this.context, this.canvas.width, this.canvas.height);
+    log(this.pixelsData);
 
     for (let y = 0; y < this.pixelsData.height; y += cellSize) {
       for (let x = 0; x < this.pixelsData.width; x += cellSize) {
