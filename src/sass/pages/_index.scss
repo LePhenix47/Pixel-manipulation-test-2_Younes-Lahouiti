@@ -1,3 +1,7 @@
 @use "../utils/" as *;
 
-.index {}
+.index {
+    min-height: 82.5dvh;
+
+    background-color: var(--bg-secondary);
+}

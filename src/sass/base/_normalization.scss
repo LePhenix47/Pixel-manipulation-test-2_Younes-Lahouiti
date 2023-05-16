@@ -50,9 +50,9 @@ body {
     overflow-x: hidden;
 
     transition:
-        background-color 350ms ease-in-out,
-        color 350ms ease-in-out,
-    ;
+        background-color 650ms ease-in-out,
+        color 350ms ease-in-out;
+
 }
 
 :is(ul, ol) {
