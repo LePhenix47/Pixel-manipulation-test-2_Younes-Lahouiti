@@ -18,7 +18,7 @@ Interactive Canvas Image pixel manipulation is a mini project that allows users 
 
 ## 2. Demo
 
-You can see a live demo of the project at: [this GitHub page]()
+You can see a live demo of the project at: [this GitHub page](https://lephenix47.github.io/Pixel-manipulation-test-2_Younes-Lahouiti/)
 
 ## 3. Technologies Used
 
