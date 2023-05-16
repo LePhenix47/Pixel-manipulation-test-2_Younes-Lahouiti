@@ -39,15 +39,21 @@ export function getRandomNumber(
 }
 
 /**
- * Calculates the nth root of a value.
+ * Calculates the nth root of a number.
  *
  * @param {number} value - The value for which to calculate the nth root.
- * @param {number} base - The base of the nth root. Default is 2.
+ * @param {number} base - The degree of the root.
  * @returns {number} The nth root of the value.
  */
-export function nthRoot(value: number, base: number = 2): number {
-  // return Math.sqrt
-  return 0;
+export function nthRoot(value: number, base: number): number {
+  //We check that the value is negative AND  that the base is pair
+  const rootIsInvalid: boolean = value < 0 && base % 2 !== 1;
+  if (rootIsInvalid) {
+    // Negative value cannot have an even root
+    return NaN;
+  }
+
+  return value ** (1 / base);
 }
 
 /**
