@@ -37,3 +37,56 @@ export function getRandomNumber(
     return Math.floor(Math.random() * (max - min - 1)) + min + 1;
   }
 }
+
+/**
+ * Calculates the nth root of a value.
+ *
+ * @param {number} value - The value for which to calculate the nth root.
+ * @param {number} base - The base of the nth root. Default is 2.
+ * @returns {number} The nth root of the value.
+ */
+export function nthRoot(value: number, base: number = 2): number {
+  // return Math.sqrt
+  return 0;
+}
+
+/**
+ * Calculates the logarithm of a value with a specified base.
+ *
+ * @param {number} value - The value for which to calculate the logarithm.
+ * @param {number} base - The base of the logarithm. Default is Math.E.
+ * @returns {number} The logarithm of the value.
+ * @throws {string} Throws an error if the base is invalid.
+ */
+export function logarithm(value: number, base: number = Math.E): number {
+  const baseIsInvalid = base <= 0 || base === 1;
+  if (baseIsInvalid) {
+    throw "The base passed of the logarithm is invalid";
+  }
+
+  return Math.log(value) / Math.log(base);
+}
+
+/**
+ * Calculates the brightness of a color from its RGB values.
+ *
+ * @param {number} red - The red component of the color (0-255).
+ * @param {number} blue - The blue component of the color (0-255).
+ * @param {number} green - The green component of the color (0-255).
+ * @param {boolean} hasToBeExact - Specifies whether the exact brightness should be calculated. If true, the formula (0.2126 * red + 0.7152 * green + 0.0722 * blue) is used. If false, the average of the RGB values is used.
+ * @returns {number} The brightness of the color.
+ */
+export function getColorBrightness(
+  red: number,
+  blue: number,
+  green: number,
+  hasToBeExact: boolean
+): number {
+  if (hasToBeExact) {
+    const brightness = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+
+    return brightness;
+  }
+
+  return (red + green + blue) / 3;
+}

@@ -4,4 +4,63 @@
     min-height: 82.5dvh;
 
     background-color: var(--bg-secondary);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+
+    padding-block: 25px;
+
+    &__form {
+        width: 80%;
+        margin: auto;
+
+        @include center-flex(25px);
+
+        @include mobile-only {
+            @include center-flex-column(25px);
+        }
+    }
+
+    &__label {}
+
+    &__input {
+        --border-color: rgb(59, 59, 59);
+
+        outline: 1px solid var(--border-color);
+
+        padding: 0px 10px;
+        border-radius: 5px;
+
+        min-width: 70%;
+
+        &:focus {
+            outline: 2px solid var(--border-color);
+        }
+    }
+
+
+    &__container {
+        position: relative;
+
+        min-height: 70dvh;
+        min-width: 85vw;
+
+        outline: 2px solid currentColor;
+        border-radius: 10px;
+    }
+
+    &__canvas {
+        background-color: white;
+
+        width: 100%;
+        height: 100%;
+
+        position: absolute;
+
+        border-radius: inherit;
+
+        transition: filter 350ms ease-in-out;
+    }
 }
