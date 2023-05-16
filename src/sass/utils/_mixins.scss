@@ -1,0 +1,186 @@
+//Media queries
+@mixin mobile-only {
+    @media screen and (width <=768px) {
+        @content;
+    }
+}
+
+@mixin tablet-only {
+    @media screen and (768px <=width <=992px) {
+        @content;
+    }
+
+    ;
+}
+
+@mixin laptop-only {
+    @media screen and (992px <=width <=1150px) {
+        @content;
+    }
+}
+
+@mixin desktop-small-only {
+    @media screen and (1150px <=width <=1475px) {
+        @content;
+    }
+}
+
+@mixin desktop-only {
+    @media screen and (width>=1475px) {
+        @content;
+    }
+}
+
+
+@mixin mobile-landscape-only {
+    @media screen and (width <=768px) and (orientation: landscape) {
+        @content;
+    }
+}
+
+//Other
+//Flex mixins
+@mixin center-flex($gap: 0px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: $gap;
+}
+
+@mixin center-flex-column($gap: 0px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: $gap;
+}
+
+
+//Grid mixins
+@mixin grid($rows: auto-fill, $columns: auto-fill, $gap: 0px) {
+    display: grid;
+    grid-template-rows: repeat($rows, 1fr);
+    grid-template-columns: repeat($columns, 1fr);
+    gap: $gap;
+}
+
+@mixin grid-center {
+    justify-items: center;
+    align-content: center;
+}
+
+
+@mixin grid-auto($rows: auto, $columns: auto) {
+    grid-auto-rows: $rows;
+    grid-auto-columns: $columns;
+}
+
+//Mixin to center in the middle
+@mixin absolute-center {
+    translate: -50% -50%;
+    inset: 50%;
+}
+
+
+//Mixin to make the image fit
+@mixin fit-image {
+    object-fit: cover;
+    object-position: center;
+}
+
+//Mixin to get the text ellipsis effect on a single line
+@mixin single-ellipsis-effect {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+//Mixin to get the text ellipsis effect after a few lines
+@mixin multiline-ellipsis-effect($columns: 2) {
+    //As of 2023 the line-clamp property still hasn't been standardized yet
+    display: -webkit-box;
+    -webkit-line-clamp: $columns;
+    -webkit-box-orient: vertical;
+
+    line-clamp: $columns;
+
+    overflow: hidden;
+}
+
+//Element speific mixins:
+
+@mixin input-range-style {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    overflow: hidden;
+
+    --track-size: 16px;
+    --bg-track: rgb(124, 213, 213);
+
+    &::-webkit-slider-runnable-track {
+
+        background-color: var(--bg-track);
+        border-radius: 3px;
+        height: var(--track-size);
+
+
+        &:hover {}
+    }
+
+    &::-moz-range-track {
+
+        background-color: var(--bg-track);
+        border-radius: 3px;
+        height: var(--track-size);
+
+
+        &:hover {}
+    }
+
+
+    --thumb-size: 12px;
+    --border-size: 3px;
+    --bg-thumb: #94abb5;
+
+    &::-webkit-slider-thumb {
+
+        margin-block: 2px;
+
+        -webkit-appearance: none;
+        appearance: none;
+
+        background-color: var(--bg-thumb);
+        outline: 2px solid var(--bg-thumb);
+
+        border-radius: 100vmax;
+
+
+        box-shadow: calc(-299px - var(--thumb-size)/2) 0 0 300px #66777e;
+
+        height: calc(var(--thumb-size));
+        width: calc(var(--thumb-size));
+
+        &:hover {}
+    }
+
+
+    &::-moz-range-thumb {
+        margin-block: 2px;
+
+        -webkit-appearance: none;
+        appearance: none;
+
+        background-color: var(--bg-thumb);
+
+        box-shadow: calc(-305px - var(--thumb-size)/2) 0 0 300px #66777e;
+
+
+        height: calc(1.25 * var(--thumb-size));
+        width: calc(1.25 * var(--thumb-size));
+
+        &:hover {}
+    }
+}

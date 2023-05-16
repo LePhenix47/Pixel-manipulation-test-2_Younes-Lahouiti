@@ -1,0 +1,39 @@
+@use "../utils/" as *;
+
+/* 
+    Hides the element and all its descendants from view
+ */
+.hide {
+    display: none !important;
+}
+
+/* 
+    Hides the element from view except for screen readers 
+    
+    - Good for accessibilty and by consequence SEO
+*/
+.screen-readers-only {
+    // Positions the element off the screen 
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+
+    // Sets the dimensions of the element to 1×1 px 
+    height: 1px;
+    width: 1px;
+
+    // Hides any content that overflows the element 
+    overflow: hidden;
+
+    // Positions the element absolutely 
+    position: absolute;
+
+    // Prevents line breaks in the element 
+    white-space: nowrap;
+}
+
+/* 
+    Disables pointer events for the element and its descendants 
+*/
+.no-pointer-events {
+    pointer-events: none;
+}

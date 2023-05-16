@@ -1,0 +1,13 @@
+@use "../utils/" as *;
+
+.header {
+    background-image: linear-gradient(180deg, #94abb5, transparent);
+    background-color: var(--bg-primary);
+    color: var(--color-primary);
+
+    padding: 20px;
+
+    &__title {
+        text-align: center;
+    }
+}

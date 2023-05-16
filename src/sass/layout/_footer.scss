@@ -1,0 +1,9 @@
+@use "../utils/" as *;
+
+.footer {
+    background-image: linear-gradient(0deg, #94abb5, transparent);
+    background-color: var(--bg-primary);
+    color: var(--color-primary);
+
+    padding: 20px;
+}
