@@ -2,13 +2,15 @@
  * Gets the 2D rendering context for a given HTML canvas element.
  *
  * @param {HTMLCanvasElement} canvas - The HTML canvas element.
+ * @param {CanvasRenderingContext2DSettings} options - Canvas context options.
  *
  * @returns {CanvasRenderingContext2D } The 2D rendering context for the canvas.
  */
 export function get2DContext(
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
+  options?: CanvasRenderingContext2DSettings
 ): CanvasRenderingContext2D {
-  return canvas.getContext("2d");
+  return canvas.getContext("2d", options);
 }
 
 /**
