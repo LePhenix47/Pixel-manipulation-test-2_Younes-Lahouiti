@@ -52,7 +52,7 @@ export function getRandomNumber(
  */
 export function nthRoot(value: number, base: number = 2): number {
   //We check that the value is negative AND  that the base is pair
-  const rootIsInvalid: boolean = value < 0 && base % 2 !== 1;
+  const rootIsInvalid: boolean = value < 0 && base % 2 === 0;
   if (rootIsInvalid) {
     // Negative values cannot have an even root
     //∛(-27) = 3 but √(-16) = undefined
@@ -100,8 +100,9 @@ export function logarithm(value: number, base: number = Math.E): number {
  * @param {number} green - The green component of the color (0-255).
  * @param {boolean} hasToBeExact - Specifies whether the exact brightness should be calculated.
  *
- * If true, the formula [`(0.2126 × red + 0.7152 × green + 0.0722 × blue)`](https://en.wikipedia.org/wiki/Relative_luminance) is used.
- * If false, the average of the RGB values is used.
+ * If `true`, the formula [`(0.2126 × red + 0.7152 × green + 0.0722 × blue)`](https://en.wikipedia.org/wiki/Relative_luminance) is used.
+ *
+ * If `false`, the average of the RGB values is used.
  *
  *
  * @returns {number} The brightness of the color.

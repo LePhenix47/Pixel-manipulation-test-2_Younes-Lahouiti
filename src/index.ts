@@ -15,6 +15,8 @@ const context: CanvasRenderingContext2D = get2DContext(canvas, {
 
 const containerSection: HTMLElement = selectQuery(".index__container");
 
+const textInput: HTMLInputElement = selectQuery(".index__input");
+
 const mouseMapInfos: Map<string, number> = new Map();
 mouseMapInfos.set("x", 0);
 mouseMapInfos.set("y", 0);
@@ -41,7 +43,7 @@ function setMouseCoords(event: MouseEvent) {
   mouseMapInfos.set("y", event.y);
 }
 
-let effect = new PixelEffect(canvas, "This text is interactive, hover me!");
+let effect = new PixelEffect(canvas, textInput.value);
 function animate() {
   clearOldPaint(context, canvas.width, canvas.height);
   // Call functions or methods to create effects in the canvas here
