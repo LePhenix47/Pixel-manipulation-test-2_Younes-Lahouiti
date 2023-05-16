@@ -89,10 +89,11 @@ export function getColorBrightness(
   hasToBeExact: boolean
 ): number {
   if (hasToBeExact) {
-    const brightness = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    const brightness =
+      0.2126 * (red % 256) + 0.7152 * (green % 256) + 0.0722 * (blue % 256);
 
     return brightness;
   }
 
-  return (red + green + blue) / 3;
+  return ((red % 256) + (green % 256) + (blue % 256)) / 3;
 }
