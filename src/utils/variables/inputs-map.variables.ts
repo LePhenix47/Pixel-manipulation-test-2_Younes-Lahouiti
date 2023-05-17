@@ -14,5 +14,5 @@ export const arrayOfKeyPairs: (
   { key: "size", value: 32 },
   { key: "strokeColor", value: "transparent" },
   { key: "strokeWidth", value: 1 },
-  { key: "pixelResolution", value: 2 },
+  { key: "pixelResolution", value: 1 },
 ];

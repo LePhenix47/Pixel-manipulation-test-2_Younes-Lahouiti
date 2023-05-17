@@ -296,12 +296,33 @@ export function parseToJS(string: string): any {
 }
 
 /**
- * Converts a JavaScript value to a JSON string.
+ * Converts a JavaScript value to a JSON string
  *
- * @param {any} value - A JavaScript value, usually an object or an array, to be converted to a JSON string.
+ * @param {any} value - A JavaScript value, usually an object or an array, to be converted to a JSON string
  *
- * @returns {string} The JSON string representation of the input value.
+ * @returns {string} The JSON string representation of the input value
  */
 export function stringifyToJSON(value: any): string {
   return JSON.stringify(value);
+}
+
+/**
+ * Converts a kebab-case string to camelCase
+ *
+ * @param {string} string - The kebab-case string to be converted
+ *
+ * @returns {string} The converted camelCase string
+ */
+export function kebabToCamelCase(string: string): string {
+  let separatedString = splitString(string, "-");
+
+  for (let i = 1; i < separatedString.length; i++) {
+    //We start after the first word hence why i = 1
+
+    //We modify the array
+    separatedString[i] = formatText(separatedString[i], "titlecase");
+  }
+
+  const joinedText: string = separatedString.join();
+  return replaceText(joinedText, ",", "");
 }

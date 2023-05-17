@@ -10,7 +10,11 @@ import {
   selectQueryAll,
   setStyleProperty,
 } from "./utils/functions/dom.functions";
-import { formatText, splitString } from "./utils/functions/string.functions";
+import {
+  formatText,
+  kebabToCamelCase,
+  splitString,
+} from "./utils/functions/string.functions";
 import { arrayOfKeyPairs } from "./utils/variables/inputs-map.variables";
 
 /**
@@ -30,11 +34,28 @@ const containerSection: HTMLElement = selectQuery(".index__container");
 const textInput: HTMLInputElement = selectQuery(".index__input");
 textInput.addEventListener("input", showTextToCanvas);
 
+function showTextToCanvas(event: InputEvent) {
+  resetAnimation();
+
+  //We make the changes here
+  //@ts-ignore
+  const inputValue: string = event.target.value;
+  mapInputsInfosForText.set("text", inputValue);
+  //
+
+  resetEffect();
+  animate();
+}
+
 const mouseMapInfos: Map<string, number> = new Map();
 
 const mapInputsInfosForText: Map<string, any> = new Map();
 
-const colorInputs: HTMLInputElement[] = selectQueryAll(".index__input--color");
+const allInputs: HTMLInputElement[] = selectQueryAll(
+  ".index__input:not(input#mouse-radius)"
+);
+
+log(allInputs);
 
 /**
  * Initializes the color input elements by adding an "input" event listener to each input.
@@ -42,7 +63,7 @@ const colorInputs: HTMLInputElement[] = selectQueryAll(".index__input--color");
  * @returns {void}
  */
 function initializeInputs(): void {
-  for (const input of colorInputs) {
+  for (const input of allInputs) {
     input.addEventListener("input", setMapValues);
   }
 }
@@ -58,6 +79,30 @@ function setMapValues(event: Event): void {
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
 
+  const formattedNameOfInput: string = kebabToCamelCase(input.name);
+  //@ts-ignore
+  const inputValue = input.value;
+
+  switch (formattedNameOfInput) {
+    case "fill":
+    case "strokeColor":
+    case "canvasBackground": {
+      setBackgroundToColorInput(event);
+      break;
+    }
+
+    default: {
+      mapInputsInfosForText.set(formattedNameOfInput, inputValue);
+      break;
+    }
+  }
+
+  log(formattedNameOfInput, mapInputsInfosForText);
+}
+
+function setBackgroundToColorInput(event: Event): void {
+  //@ts-ignore
+  const input: HTMLInputElement = event.currentTarget;
   //@ts-ignore
   const label: HTMLLabelElement = getParent(input);
   const labelType: string = splitString(label.innerText, ":")[0];
@@ -99,9 +144,8 @@ function setMapValues(event: Event): void {
 
   log(mapInputsInfosForText);
 }
-
 /**
- * Initializes the {@link mapInputsInfosForText} map
+ * Initializes the {@link mapInputsInfosForText} variable map
  *
  * @returns {void}
  */
@@ -183,29 +227,15 @@ function resetAnimation() {
   effect.reset();
 }
 
-function showTextToCanvas(event: InputEvent) {
-  resetAnimation();
-  effect = effect = new PixelEffect(
-    canvas,
-    //@ts-ignore
-    event.target.value,
-    "white",
-    32,
-    "Consolas"
-  );
-  //@ts-ignore
-  log(event.target.value);
-  animate();
-}
-
 function resetEffect() {
   effect = effect = new PixelEffect(
     canvas,
-    mapInputsInfosForText.get("family"),
+    mapInputsInfosForText.get("text"),
     mapInputsInfosForText.get("fill"),
     mapInputsInfosForText.get("size"),
-    mapInputsInfosForText.get("strokeWidth"),
+    mapInputsInfosForText.get("family"),
     mapInputsInfosForText.get("strokeColor"),
+    mapInputsInfosForText.get("strokeWidth"),
     mapInputsInfosForText.get("pixelResolution")
   );
 }
