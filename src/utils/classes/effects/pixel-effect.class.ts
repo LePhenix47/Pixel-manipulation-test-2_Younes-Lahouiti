@@ -95,13 +95,20 @@ export class PixelEffect {
    *
    * @type {string}
    */
-  stroke: string;
+  strokeColor: string;
   /**
    * The stroke width of the text.
    *
    * @type {string}
    */
   strokeWidth: number;
+
+  /**
+   * The pixel resolution of the text
+   *
+   * @type {string}
+   */
+  pixelResolution: number;
 
   /**
    * Creates an instance of the PixelEffect class.
@@ -118,8 +125,9 @@ export class PixelEffect {
     textColor: string,
     fontSize: number,
     fontFamily: string,
-    stroke?: string,
-    strokeWidth?: number
+    strokeColor: string = "transparent",
+    strokeWidth?: number,
+    pixelResolution?: number
   ) {
     this.canvas = canvas;
     this.context = get2DContext(canvas);
@@ -131,22 +139,25 @@ export class PixelEffect {
     this.fontSize = fontSize;
     this.fontFamily = fontFamily;
 
-    this.stroke = stroke;
+    this.strokeColor = strokeColor;
     this.strokeWidth = strokeWidth;
 
+    this.pixelResolution = pixelResolution;
+
     this.createText();
-    this.convertToPixels(2);
-    log(this);
+    this.convertToPixels(this.pixelResolution);
+    // log(this);
   }
 
   /**
-   * Draws the image on the canvas with a certain pixel resolution
+   * Draws the text on the canvas
    *
    * @returns {void}
    */
-  createText(): void {
+  private createText(): void {
     this.context.fillStyle = this.textColor;
-    this.context.strokeStyle = this.stroke;
+    this.context.strokeStyle = this.strokeColor;
+
     this.context.font = `${this.fontSize}px ${this.fontFamily}`;
 
     this.textMetrics = this.context.measureText(this.text);
@@ -177,10 +188,11 @@ export class PixelEffect {
   }
 
   /**
-   * Converts the canvas image to pixels.
+   * Converts the canvas text to pixels with a certain resolution.
    * @private
    * @param {number} [cellSize=1] - The size of the pixel cells.
-   *  @returns {void}
+   *
+   * @returns {void}
    */
   private convertToPixels(cellSize: number = 1): void {
     //We remove the static image on our <canvas>

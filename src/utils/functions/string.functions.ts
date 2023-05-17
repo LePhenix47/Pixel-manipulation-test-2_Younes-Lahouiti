@@ -5,7 +5,7 @@ import { log } from "./console.functions";
  *Function that formats a given string in 3 cases: lowercase, uppercase and titlecase
  *
  * @param {string} string - The string to format.
- * @param {string} option - The option to use for formatting. Valid options are 'lowercase', 'uppercase', or 'titlecase'.
+ * @param {string} option - The option to use for formatting. Valid options are "lowercase", "uppercase", "titlecase" or "titlecase2".
  *
  * @returns {string} The formatted string
  *
@@ -41,6 +41,13 @@ export function formatText(string: string, option: string): string | never {
 
       stringArray = stringArray.concat();
       return stringArray.toString();
+    }
+
+    case "titlecase2": {
+      let firstLetter = string.substring(0, 1).toUpperCase();
+      let rest = string.substring(1).toLowerCase();
+
+      return firstLetter + rest;
     }
 
     default: {

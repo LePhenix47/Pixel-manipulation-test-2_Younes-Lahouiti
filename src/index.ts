@@ -10,7 +10,8 @@ import {
   selectQueryAll,
   setStyleProperty,
 } from "./utils/functions/dom.functions";
-import { formatText } from "./utils/functions/string.functions";
+import { formatText, splitString } from "./utils/functions/string.functions";
+import { arrayOfKeyPairs } from "./utils/variables/inputs-map.variables";
 
 /**
  * Logs a message to the console.
@@ -38,7 +39,7 @@ const colorInputs: HTMLInputElement[] = selectQueryAll(".index__input--color");
  */
 function initializeInputs(): void {
   for (const input of colorInputs) {
-    input.addEventListener("input", setInputBackground);
+    input.addEventListener("input", setMapValues);
   }
 }
 initializeInputs();
@@ -49,13 +50,17 @@ initializeInputs();
  *
  * @returns {void}
  */
-function setInputBackground(event: Event): void {
-  const input = event.currentTarget;
+function setMapValues(event: Event): void {
   //@ts-ignore
-  const label: HTMLLabelElement = getParent(input);
+  const input: HTMLInputElement = event.currentTarget;
 
   //@ts-ignore
-  const formattedInputValue = formatText(input.value, "uppercase");
+  const label: HTMLLabelElement = getParent(input);
+  const labelType: string = splitString(label.innerText, ":")[0];
+  log({ labelType });
+
+  //@ts-ignore
+  const formattedInputValue: string = formatText(input.value, "uppercase");
 
   const spanLabel: HTMLSpanElement = selectQuery(".index__label-span", label);
   //@ts-ignore
@@ -63,24 +68,37 @@ function setInputBackground(event: Event): void {
   //@ts-ignore
   setStyleProperty("--bg-input-color", formattedInputValue, input);
 
-  const isCanvasInputColor: boolean =
-    label.innerText.includes("Canvas background:");
-  if (isCanvasInputColor) {
-    //@ts-ignore
-    setStyleProperty("--bg-canvas", formattedInputValue, canvas);
-    return;
+  switch (labelType) {
+    case "Canvas background": {
+      setStyleProperty("--bg-input-color", formattedInputValue, input);
+      setStyleProperty("--bg-canvas", formattedInputValue, canvas);
+      break;
+    }
+
+    default: {
+      setStyleProperty("--bg-input-color", formattedInputValue, input);
+      break;
+    }
   }
 }
 
 const mouseMapInfos: Map<string, number> = new Map();
 
-const inputsInfosForText: Map<string, string | number> = new Map();
+const inputsInfosForText: Map<string, any> = new Map();
 
-inputsInfosForText.set("family", "Arial");
-inputsInfosForText.set("fill", "white");
-inputsInfosForText.set("font-size", 32);
-inputsInfosForText.set("stroke-width", 1);
-inputsInfosForText.set("stroke", "transparent");
+/**
+ * Initializes the {@link inputsInfosForText} map
+ *
+ * @returns {void}
+ */
+function initializeInfosTextMap(): void {
+  for (const keyPair of arrayOfKeyPairs) {
+    const { key, value } = keyPair;
+    inputsInfosForText.set(key, value);
+  }
+}
+initializeInfosTextMap();
+log(inputsInfosForText);
 
 let animationId: number = 0;
 
@@ -169,10 +187,11 @@ function showTextToCanvas(event: InputEvent) {
 function resetEffect() {
   effect = effect = new PixelEffect(
     canvas,
-    //@ts-ignore
-    event.target.value,
-    "white",
-    32,
-    "Consolas"
+    inputsInfosForText.get("family"),
+    inputsInfosForText.get("fill"),
+    inputsInfosForText.get("size"),
+    inputsInfosForText.get("strokeWidth"),
+    inputsInfosForText.get("strokeColor"),
+    inputsInfosForText.get("pixelResolution")
   );
 }
