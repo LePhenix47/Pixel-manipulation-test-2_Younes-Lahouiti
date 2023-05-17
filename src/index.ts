@@ -30,6 +30,10 @@ const containerSection: HTMLElement = selectQuery(".index__container");
 const textInput: HTMLInputElement = selectQuery(".index__input");
 textInput.addEventListener("input", showTextToCanvas);
 
+const mouseMapInfos: Map<string, number> = new Map();
+
+const mapInputsInfosForText: Map<string, any> = new Map();
+
 const colorInputs: HTMLInputElement[] = selectQueryAll(".index__input--color");
 
 /**
@@ -75,30 +79,40 @@ function setMapValues(event: Event): void {
       break;
     }
 
+    case "Fill": {
+      mapInputsInfosForText.set("fill", formattedInputValue);
+      setStyleProperty("--bg-input-color", formattedInputValue, input);
+      break;
+    }
+
+    case "Stroke color": {
+      mapInputsInfosForText.set("strokeColor", formattedInputValue);
+      setStyleProperty("--bg-input-color", formattedInputValue, input);
+      break;
+    }
+
     default: {
       setStyleProperty("--bg-input-color", formattedInputValue, input);
       break;
     }
   }
+
+  log(mapInputsInfosForText);
 }
 
-const mouseMapInfos: Map<string, number> = new Map();
-
-const inputsInfosForText: Map<string, any> = new Map();
-
 /**
- * Initializes the {@link inputsInfosForText} map
+ * Initializes the {@link mapInputsInfosForText} map
  *
  * @returns {void}
  */
 function initializeInfosTextMap(): void {
   for (const keyPair of arrayOfKeyPairs) {
     const { key, value } = keyPair;
-    inputsInfosForText.set(key, value);
+    mapInputsInfosForText.set(key, value);
   }
 }
 initializeInfosTextMap();
-log(inputsInfosForText);
+log(mapInputsInfosForText);
 
 let animationId: number = 0;
 
@@ -187,11 +201,11 @@ function showTextToCanvas(event: InputEvent) {
 function resetEffect() {
   effect = effect = new PixelEffect(
     canvas,
-    inputsInfosForText.get("family"),
-    inputsInfosForText.get("fill"),
-    inputsInfosForText.get("size"),
-    inputsInfosForText.get("strokeWidth"),
-    inputsInfosForText.get("strokeColor"),
-    inputsInfosForText.get("pixelResolution")
+    mapInputsInfosForText.get("family"),
+    mapInputsInfosForText.get("fill"),
+    mapInputsInfosForText.get("size"),
+    mapInputsInfosForText.get("strokeWidth"),
+    mapInputsInfosForText.get("strokeColor"),
+    mapInputsInfosForText.get("pixelResolution")
   );
 }
