@@ -184,3 +184,32 @@
         &:hover {}
     }
 }
+
+@mixin input-color-style {
+
+    &::-webkit-color-swatch {
+        display: none;
+    }
+}
+
+@mixin input-number-style {
+
+    /*
+    Ignore the warning, we need to use only this
+    property to remove the native increment-decrement buttons
+    of the input type number on Mozilla Firefox            
+    */
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        appearance: none;
+    }
+
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        appearance: none;
+    }
+}

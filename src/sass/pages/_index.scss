@@ -12,10 +12,22 @@
 
     padding-block: 25px;
 
-    &__form {
-        width: 80%;
+    &__controls {
         margin: auto;
+        width: 80%;
 
+        @include center-flex-column(25px);
+    }
+
+    &__input-controls {
+        @include grid(2, 3, 15px);
+
+        & label {
+            border: 2px solid red;
+        }
+    }
+
+    &__form {
         @include center-flex(25px);
 
         @include mobile-only {
@@ -23,22 +35,35 @@
         }
     }
 
-    &__label {}
+    &__label {
+        display: inline-flex;
+
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
 
     &__input {
         --border-color: rgb(59, 59, 59);
 
-        outline: 1px solid var(--border-color);
-
-        padding: 0px 10px;
-        border-radius: 5px;
-
-        min-width: 70%;
-
         &:focus {
             outline: 2px solid var(--border-color);
         }
+
+        &--number {
+            @include input-number-style;
+        }
+
+        &--color {
+            @include input-color-style;
+        }
+
+        &--range {}
     }
+
+    &__select {}
+
+    &__options {}
 
 
     &__container {

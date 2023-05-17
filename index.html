@@ -52,8 +52,7 @@
                 <input type="text" id="text" class="index__input" placeholder="Hello world!">
             </form>
 
-            <div class="index__input-controls">
-                <label for="font-family">Select a Font Family:</label>
+            <label class="index__label" for="font-family">Select a Font Family:
                 <select class="index__select" id="font-family">
                     <option class="index__option" value="">---</option>
                     <option class="index__option" value="Arial">Arial</option>
@@ -74,29 +73,44 @@
                     <option class="index__option" value="Trebuchet MS">Trebuchet MS</option>
                     <option class="index__option" value="Impact">Impact</option>
                 </select>
+            </label>
+            <div class="index__input-controls">
 
-                <label for="font-size">Font size</label>
-                <input type="number" id="font-size" class="index__input" min="1" max="128" step="1" />
+                <label class="index__label" for="font-size">Font size:
+                    <input type="number" id="font-size" class="index__input index__input--number" min="1" max="128"
+                        step="1" />
+                </label>
 
 
-                <label for="font-fill">Fill</label>
-                <input type="color" id="font-fill" class="index__input" />
+                <label class="index__label" for="font-fill">Fill:
+                    <input type="color" id="font-fill" class="index__input index__input--color" value="#ffffff" />
+                </label>
 
 
-                <label for="font-stroke">Stroke color</label>
-                <input type="color" id="font-stroke" class="index__input" />
+                <label class="index__label" for="font-stroke">Stroke color:
+                    <input type="color" id="font-stroke" class="index__input index__input--color" value="#000000" />
+                </label>
 
-                <label for="font-stroke-thickness">Stroke thickness</label>
-                <input type="number" id="font-stroke-thickness" class="index__input" min="1" max="128" step="1" />
+                <label class="index__label" for="font-stroke-thickness">Stroke thickness:
+                    <input type="number" id="font-stroke-thickness" class="index__input index__input--number" min="0"
+                        max="128" step="1" />
+                </label>
+
+                <label class="index__label" for="canvas-background">Canvas background:
+                    <input type="color" id="canvas-background" class="index__input index__input--color"
+                        value="#000000" />
+                </label>
 
             </div>
 
             <div class="index__range-controls">
-                <label for="pixel-resolution">Pixel resolution</label>
-                <input type="range" id="pixel-resolution" class="index__input" min="1" max="20" step="1" />
+                <label class="index__label" for="pixel-resolution">Pixel resolution:
+                    <input type="range" id="pixel-resolution" class="index__input" min="1" max="20" step="1" />
+                </label>
 
-                <label for="mouse-radius">Mouse radius</label>
-                <input type="range" id="mouse-radius" class="index__input" min="1" max="20" step="1" />
+                <label class="index__label" for="mouse-radius">Mouse radius:
+                    <input type="range" id="mouse-radius" class="index__input" min="1" max="20" step="1" />
+                </label>
             </div>
         </section>
         <section class="index__container">
