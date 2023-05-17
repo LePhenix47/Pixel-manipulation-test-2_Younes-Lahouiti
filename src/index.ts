@@ -31,16 +31,11 @@ const context: CanvasRenderingContext2D = get2DContext(canvas, {
 
 const containerSection: HTMLElement = selectQuery(".index__container");
 
-const textInput: HTMLInputElement = selectQuery(".index__input");
-textInput.addEventListener("input", showTextToCanvas);
-
 function showTextToCanvas(event: InputEvent) {
   resetAnimation();
 
   //We make the changes here
-  //@ts-ignore
-  const inputValue: string = event.target.value;
-  mapInputsInfosForText.set("text", inputValue);
+
   //
 
   resetEffect();
@@ -51,9 +46,11 @@ const mouseMapInfos: Map<string, number> = new Map();
 
 const mapInputsInfosForText: Map<string, any> = new Map();
 
+const selectElement: HTMLSelectElement = selectQuery(".index__select");
+
 const allInputs: HTMLInputElement[] = selectQueryAll(
   ".index__input:not(input#mouse-radius)"
-);
+).concat(selectElement);
 
 log(allInputs);
 
@@ -64,7 +61,7 @@ log(allInputs);
  */
 function initializeInputs(): void {
   for (const input of allInputs) {
-    input.addEventListener("input", setMapValues);
+    input.addEventListener("change", setMapValues);
   }
 }
 initializeInputs();
@@ -76,12 +73,16 @@ initializeInputs();
  * @returns {void}
  */
 function setMapValues(event: Event): void {
+  resetAnimation();
+
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
 
   const formattedNameOfInput: string = kebabToCamelCase(input.name);
   //@ts-ignore
-  const inputValue = input.value;
+  const inputValue = !isNaN(Number(input.value))
+    ? Number(input.value)
+    : input.value;
 
   switch (formattedNameOfInput) {
     case "fill":
@@ -97,7 +98,8 @@ function setMapValues(event: Event): void {
     }
   }
 
-  log(formattedNameOfInput, mapInputsInfosForText);
+  resetEffect();
+  animate();
 }
 
 function setBackgroundToColorInput(event: Event): void {
@@ -106,7 +108,6 @@ function setBackgroundToColorInput(event: Event): void {
   //@ts-ignore
   const label: HTMLLabelElement = getParent(input);
   const labelType: string = splitString(label.innerText, ":")[0];
-  log({ labelType });
 
   //@ts-ignore
   const formattedInputValue: string = formatText(input.value, "uppercase");
@@ -141,8 +142,6 @@ function setBackgroundToColorInput(event: Event): void {
       break;
     }
   }
-
-  log(mapInputsInfosForText);
 }
 /**
  * Initializes the {@link mapInputsInfosForText} variable map
@@ -156,7 +155,6 @@ function initializeInfosTextMap(): void {
   }
 }
 initializeInfosTextMap();
-log(mapInputsInfosForText);
 
 let animationId: number = 0;
 
@@ -191,7 +189,8 @@ function setMouseCoords(event: MouseEvent): void {
 }
 canvas.addEventListener("mousemove", setMouseCoords);
 
-let effect = new PixelEffect(canvas, textInput.value, "white", 32, "Consolas");
+let effect: PixelEffect;
+resetEffect();
 // effect.createText("white", 32, "Consolas");
 /**
  * Animates the canvas by continuously rendering the pixel effect.
