@@ -50,71 +50,76 @@
             <form class="index__form">
                 <label for="text" class="index__label">Type to show on canvas: </label>
                 <input type="text" id="text" class="index__input" placeholder="Hello world!">
+
+                <label class="index__label" for="font-family">Select a Font Family:
+                    <select class="index__select" id="font-family">
+                        <option class="index__option" value="">---</option>
+                        <option class="index__option" value="Arial">Arial</option>
+                        <option class="index__option" value="Arial Black">Arial Black</option>
+                        <option class="index__option" value="Helvetica">Helvetica</option>
+                        <option class="index__option" value="Times New Roman">Times New Roman</option>
+                        <option class="index__option" value="Times">Times</option>
+                        <option class="index__option" value="Courier New">Courier New</option>
+                        <option class="index__option" value="Courier">Courier</option>
+                        <option class="index__option" value="Consolas">Consolas</option>
+                        <option class="index__option" value="Verdana">Verdana</option>
+                        <option class="index__option" value="Georgia">Georgia</option>
+                        <option class="index__option" value="Palatino">Palatino</option>
+                        <option class="index__option" value="Garamond">Garamond</option>
+                        <option class="index__option" value="Bookman">Bookman</option>
+                        <option class="index__option" value="Comic Sans MS">Comic Sans MS</option>
+                        <option class="index__option" value="Tahoma">Tahoma</option>
+                        <option class="index__option" value="Trebuchet MS">Trebuchet MS</option>
+                        <option class="index__option" value="Impact">Impact</option>
+                    </select>
+                </label>
+                <div class="index__input-controls">
+
+                    <label class="index__label" for="font-size">Font size:
+                        <input type="number" id="font-size" class="index__input index__input--number" min="1" max="128"
+                            step="1" />
+                    </label>
+
+
+                    <label class="index__label" for="font-fill">Fill: <span class="index__label-span">#FFFFFF</span>
+                        <input type="color" id="font-fill" class="index__input index__input--color" value="#ffffff" />
+                    </label>
+
+
+                    <label class="index__label" for="font-stroke">Stroke color: <span
+                            class="index__label-span">#000000</span>
+                        <input type="color" id="font-stroke" class="index__input index__input--color" value="#000000"
+                            style="--bg-input-color: #000000" />
+                    </label>
+
+                    <label class="index__label" for="font-stroke-thickness">Stroke thickness:
+                        <input type="number" id="font-stroke-thickness" class="index__input index__input--number"
+                            min="0" max="128" step="1" />
+                    </label>
+
+                    <label class="index__label" for="canvas-background">Canvas background: <span
+                            class="index__label-span">#000000</span>
+                        <input type="color" id="canvas-background" class="index__input index__input--color"
+                            value="#000000" style="--bg-input-color: #000000" />
+                    </label>
+
+                </div>
+
+                <div class="index__range-controls">
+                    <label class="index__label" for="pixel-resolution">Pixel resolution:
+                        <input type="range" id="pixel-resolution" class="index__input index__input--range" min="1"
+                            max="20" step="1" value="11" />
+                    </label>
+
+                    <label class="index__label" for="mouse-radius">Mouse radius:
+                        <input type="range" id="mouse-radius" class="index__input index__input--range" min="1" max="20"
+                            step="1" value="11" />
+                    </label>
+                </div>
             </form>
-
-            <label class="index__label" for="font-family">Select a Font Family:
-                <select class="index__select" id="font-family">
-                    <option class="index__option" value="">---</option>
-                    <option class="index__option" value="Arial">Arial</option>
-                    <option class="index__option" value="Arial Black">Arial Black</option>
-                    <option class="index__option" value="Helvetica">Helvetica</option>
-                    <option class="index__option" value="Times New Roman">Times New Roman</option>
-                    <option class="index__option" value="Times">Times</option>
-                    <option class="index__option" value="Courier New">Courier New</option>
-                    <option class="index__option" value="Courier">Courier</option>
-                    <option class="index__option" value="Consolas">Consolas</option>
-                    <option class="index__option" value="Verdana">Verdana</option>
-                    <option class="index__option" value="Georgia">Georgia</option>
-                    <option class="index__option" value="Palatino">Palatino</option>
-                    <option class="index__option" value="Garamond">Garamond</option>
-                    <option class="index__option" value="Bookman">Bookman</option>
-                    <option class="index__option" value="Comic Sans MS">Comic Sans MS</option>
-                    <option class="index__option" value="Tahoma">Tahoma</option>
-                    <option class="index__option" value="Trebuchet MS">Trebuchet MS</option>
-                    <option class="index__option" value="Impact">Impact</option>
-                </select>
-            </label>
-            <div class="index__input-controls">
-
-                <label class="index__label" for="font-size">Font size:
-                    <input type="number" id="font-size" class="index__input index__input--number" min="1" max="128"
-                        step="1" />
-                </label>
-
-
-                <label class="index__label" for="font-fill">Fill:
-                    <input type="color" id="font-fill" class="index__input index__input--color" value="#ffffff" />
-                </label>
-
-
-                <label class="index__label" for="font-stroke">Stroke color:
-                    <input type="color" id="font-stroke" class="index__input index__input--color" value="#000000" />
-                </label>
-
-                <label class="index__label" for="font-stroke-thickness">Stroke thickness:
-                    <input type="number" id="font-stroke-thickness" class="index__input index__input--number" min="0"
-                        max="128" step="1" />
-                </label>
-
-                <label class="index__label" for="canvas-background">Canvas background:
-                    <input type="color" id="canvas-background" class="index__input index__input--color"
-                        value="#000000" />
-                </label>
-
-            </div>
-
-            <div class="index__range-controls">
-                <label class="index__label" for="pixel-resolution">Pixel resolution:
-                    <input type="range" id="pixel-resolution" class="index__input" min="1" max="20" step="1" />
-                </label>
-
-                <label class="index__label" for="mouse-radius">Mouse radius:
-                    <input type="range" id="mouse-radius" class="index__input" min="1" max="20" step="1" />
-                </label>
-            </div>
         </section>
         <section class="index__container">
-            <canvas class="index__canvas">Drawn image uploaded on our canvas</canvas>
+            <canvas class="index__canvas">Draws interactive text from the input text</canvas>
         </section>
 
 

@@ -28,11 +28,8 @@
     }
 
     &__form {
-        @include center-flex(25px);
+        @include center-flex-column(25px);
 
-        @include mobile-only {
-            @include center-flex-column(25px);
-        }
     }
 
     &__label {
@@ -45,6 +42,7 @@
 
     &__input {
         --border-color: rgb(59, 59, 59);
+        border: 2px solid var(--border-color);
 
         &:focus {
             outline: 2px solid var(--border-color);
@@ -55,10 +53,14 @@
         }
 
         &--color {
+            --bg-input-color: white;
+            background-color: var(--bg-input-color);
             @include input-color-style;
         }
 
-        &--range {}
+        &--range {
+            @include input-range-style
+        }
     }
 
     &__select {}

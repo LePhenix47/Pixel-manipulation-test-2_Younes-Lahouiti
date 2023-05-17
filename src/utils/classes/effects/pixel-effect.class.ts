@@ -74,7 +74,7 @@ export class PixelEffect {
    *
    * @type {string}
    */
-  color: string;
+  textColor: string;
 
   /**
    * The font size of the text.
@@ -91,6 +91,19 @@ export class PixelEffect {
   fontFamily: string;
 
   /**
+   * The stroke color of the text.
+   *
+   * @type {string}
+   */
+  stroke: string;
+  /**
+   * The stroke width of the text.
+   *
+   * @type {string}
+   */
+  strokeWidth: number;
+
+  /**
    * Creates an instance of the PixelEffect class.
    *
    * @param {HTMLCanvasElement} canvas - The HTML canvas element on which the effect is applied.
@@ -102,9 +115,11 @@ export class PixelEffect {
   constructor(
     canvas: HTMLCanvasElement,
     text: string,
-    color: string,
+    textColor: string,
     fontSize: number,
-    fontFamily: string
+    fontFamily: string,
+    stroke?: string,
+    strokeWidth?: number
   ) {
     this.canvas = canvas;
     this.context = get2DContext(canvas);
@@ -112,9 +127,12 @@ export class PixelEffect {
     this.particlesArray = [];
     this.text = text;
 
-    this.color = color;
+    this.textColor = textColor;
     this.fontSize = fontSize;
     this.fontFamily = fontFamily;
+
+    this.stroke = stroke;
+    this.strokeWidth = strokeWidth;
 
     this.createText();
     this.convertToPixels(2);
@@ -127,15 +145,17 @@ export class PixelEffect {
    * @returns {void}
    */
   createText(): void {
-    this.context.fillStyle = this.color;
+    this.context.fillStyle = this.textColor;
+    this.context.strokeStyle = this.stroke;
     this.context.font = `${this.fontSize}px ${this.fontFamily}`;
 
     this.textMetrics = this.context.measureText(this.text);
 
     this.textX = this.canvas.width / 2 - this.textMetrics.width / 2;
-    this.textY = this.canvas.height / 2;
+    this.textY = this.canvas.height / 2 - this.fontSize / 2;
 
     this.context.fillText(this.text, this.textX, this.textY);
+    this.context.strokeText(this.text, this.textX, this.textY);
     log(this.context);
 
     this.pixelsData = this.context.getImageData(
@@ -187,7 +207,7 @@ export class PixelEffect {
 
         //We get an approximate value of the brightness of the pixel
         const averageColorBrightness: number = red + green + blue / 3;
-        const color: string = `rgb(${red}, ${green}, ${blue})`;
+        const pixelColor: string = `rgb(${red}, ${green}, ${blue})`;
 
         const pixelParticle: PixelParticle = new PixelParticle(
           this.context,
@@ -195,8 +215,9 @@ export class PixelEffect {
           this.canvas.height,
           x,
           y,
-          color,
-          cellSize
+          pixelColor,
+          cellSize,
+          0
         );
 
         this.particlesArray.push(pixelParticle);

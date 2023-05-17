@@ -110,6 +110,7 @@
 
 //Element speific mixins:
 
+//Input mixins
 @mixin input-range-style {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -118,12 +119,12 @@
     overflow: hidden;
 
     --track-size: 16px;
-    --bg-track: rgb(124, 213, 213);
+    --bg-track: #{var(--bg-primary)};
+    border-radius: 100vmax;
 
     &::-webkit-slider-runnable-track {
 
         background-color: var(--bg-track);
-        border-radius: 3px;
         height: var(--track-size);
 
 
@@ -133,7 +134,6 @@
     &::-moz-range-track {
 
         background-color: var(--bg-track);
-        border-radius: 3px;
         height: var(--track-size);
 
 
@@ -141,9 +141,9 @@
     }
 
 
-    --thumb-size: 12px;
+    --thumb-size: 13px;
     --border-size: 3px;
-    --bg-thumb: #94abb5;
+    --bg-thumb: grey;
 
     &::-webkit-slider-thumb {
 
@@ -158,7 +158,7 @@
         border-radius: 100vmax;
 
 
-        box-shadow: calc(-299px - var(--thumb-size)/2) 0 0 300px #66777e;
+        box-shadow: calc(-299px - var(--thumb-size)/2) 0 0 300px var(--color-primary);
 
         height: calc(var(--thumb-size));
         width: calc(var(--thumb-size));
@@ -175,7 +175,7 @@
 
         background-color: var(--bg-thumb);
 
-        box-shadow: calc(-305px - var(--thumb-size)/2) 0 0 300px #66777e;
+        box-shadow: calc(-305px - var(--thumb-size)/2) 0 0 300px var(--color-primary);
 
 
         height: calc(1.25 * var(--thumb-size));
@@ -186,6 +186,10 @@
 }
 
 @mixin input-color-style {
+
+    &::-moz-color-swatch {
+        display: none;
+    }
 
     &::-webkit-color-swatch {
         display: none;
@@ -203,13 +207,13 @@
 
     &::-webkit-inner-spin-button {
         -webkit-appearance: none;
-        -moz-appearance: textfield;
         appearance: none;
     }
 
     &::-webkit-outer-spin-button {
         -webkit-appearance: none;
-        -moz-appearance: textfield;
         appearance: none;
     }
 }
+
+@mixin input-text-style {}

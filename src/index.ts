@@ -4,7 +4,13 @@ import {
   get2DContext,
 } from "./utils/functions/canvas.functions";
 import { log } from "./utils/functions/console.functions";
-import { selectQuery } from "./utils/functions/dom.functions";
+import {
+  getParent,
+  selectQuery,
+  selectQueryAll,
+  setStyleProperty,
+} from "./utils/functions/dom.functions";
+import { formatText } from "./utils/functions/string.functions";
 
 /**
  * Logs a message to the console.
@@ -23,7 +29,58 @@ const containerSection: HTMLElement = selectQuery(".index__container");
 const textInput: HTMLInputElement = selectQuery(".index__input");
 textInput.addEventListener("input", showTextToCanvas);
 
+const colorInputs: HTMLInputElement[] = selectQueryAll(".index__input--color");
+
+/**
+ * Initializes the color input elements by adding an "input" event listener to each input.
+ *
+ * @returns {void}
+ */
+function initializeInputs(): void {
+  for (const input of colorInputs) {
+    input.addEventListener("input", setInputBackground);
+  }
+}
+initializeInputs();
+
+/**
+ * Sets the background color of the input element based on its current value.
+ * @param {Event} event - The input event triggered by the user.
+ *
+ * @returns {void}
+ */
+function setInputBackground(event: Event): void {
+  const input = event.currentTarget;
+  //@ts-ignore
+  const label: HTMLLabelElement = getParent(input);
+
+  //@ts-ignore
+  const formattedInputValue = formatText(input.value, "uppercase");
+
+  const spanLabel: HTMLSpanElement = selectQuery(".index__label-span", label);
+  //@ts-ignore
+  spanLabel.textContent = formattedInputValue;
+  //@ts-ignore
+  setStyleProperty("--bg-input-color", formattedInputValue, input);
+
+  const isCanvasInputColor: boolean =
+    label.innerText.includes("Canvas background:");
+  if (isCanvasInputColor) {
+    //@ts-ignore
+    setStyleProperty("--bg-canvas", formattedInputValue, canvas);
+    return;
+  }
+}
+
 const mouseMapInfos: Map<string, number> = new Map();
+
+const inputsInfosForText: Map<string, string | number> = new Map();
+
+inputsInfosForText.set("family", "Arial");
+inputsInfosForText.set("fill", "white");
+inputsInfosForText.set("font-size", 32);
+inputsInfosForText.set("stroke-width", 1);
+inputsInfosForText.set("stroke", "transparent");
 
 let animationId: number = 0;
 
@@ -107,4 +164,15 @@ function showTextToCanvas(event: InputEvent) {
   //@ts-ignore
   log(event.target.value);
   animate();
+}
+
+function resetEffect() {
+  effect = effect = new PixelEffect(
+    canvas,
+    //@ts-ignore
+    event.target.value,
+    "white",
+    32,
+    "Consolas"
+  );
 }
