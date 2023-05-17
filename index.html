@@ -52,7 +52,52 @@
                 <input type="text" id="text" class="index__input" placeholder="Hello world!">
             </form>
 
+            <div class="index__input-controls">
+                <label for="font-family">Select a Font Family:</label>
+                <select class="index__select" id="font-family">
+                    <option class="index__option" value="">---</option>
+                    <option class="index__option" value="Arial">Arial</option>
+                    <option class="index__option" value="Arial Black">Arial Black</option>
+                    <option class="index__option" value="Helvetica">Helvetica</option>
+                    <option class="index__option" value="Times New Roman">Times New Roman</option>
+                    <option class="index__option" value="Times">Times</option>
+                    <option class="index__option" value="Courier New">Courier New</option>
+                    <option class="index__option" value="Courier">Courier</option>
+                    <option class="index__option" value="Consolas">Consolas</option>
+                    <option class="index__option" value="Verdana">Verdana</option>
+                    <option class="index__option" value="Georgia">Georgia</option>
+                    <option class="index__option" value="Palatino">Palatino</option>
+                    <option class="index__option" value="Garamond">Garamond</option>
+                    <option class="index__option" value="Bookman">Bookman</option>
+                    <option class="index__option" value="Comic Sans MS">Comic Sans MS</option>
+                    <option class="index__option" value="Tahoma">Tahoma</option>
+                    <option class="index__option" value="Trebuchet MS">Trebuchet MS</option>
+                    <option class="index__option" value="Impact">Impact</option>
+                </select>
 
+                <label for="font-size">Font size</label>
+                <input type="number" id="font-size" class="index__input" min="1" max="128" step="1" />
+
+
+                <label for="font-fill">Fill</label>
+                <input type="color" id="font-fill" class="index__input" />
+
+
+                <label for="font-stroke">Stroke color</label>
+                <input type="color" id="font-stroke" class="index__input" />
+
+                <label for="font-stroke-thickness">Stroke thickness</label>
+                <input type="number" id="font-stroke-thickness" class="index__input" min="1" max="128" step="1" />
+
+            </div>
+
+            <div class="index__range-controls">
+                <label for="pixel-resolution">Pixel resolution</label>
+                <input type="range" id="pixel-resolution" class="index__input" min="1" max="20" step="1" />
+
+                <label for="mouse-radius">Mouse radius</label>
+                <input type="range" id="mouse-radius" class="index__input" min="1" max="20" step="1" />
+            </div>
         </section>
         <section class="index__container">
             <canvas class="index__canvas">Drawn image uploaded on our canvas</canvas>

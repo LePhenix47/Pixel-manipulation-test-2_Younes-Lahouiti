@@ -58,8 +58,8 @@ function setMouseCoords(event: MouseEvent): void {
 }
 canvas.addEventListener("mousemove", setMouseCoords);
 
-let effect = new PixelEffect(canvas, textInput.value, "black", 32, "Consolas");
-// effect.createText("black", 32, "Consolas");
+let effect = new PixelEffect(canvas, textInput.value, "white", 32, "Consolas");
+// effect.createText("white", 32, "Consolas");
 /**
  * Animates the canvas by continuously rendering the pixel effect.
  *
@@ -100,7 +100,7 @@ function showTextToCanvas(event: InputEvent) {
     canvas,
     //@ts-ignore
     event.target.value,
-    "black",
+    "white",
     32,
     "Consolas"
   );
