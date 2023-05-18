@@ -1,3 +1,8 @@
+/**
+ * An array of key-value pairs representing the default values for the inputs Map
+ *
+ * @type {{key: string; value: string | number;}[]}
+ */
 export const arrayOfKeyPairs: (
   | {
       key: string;

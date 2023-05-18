@@ -29,17 +29,6 @@ const context: CanvasRenderingContext2D = get2DContext(canvas, {
 
 const containerSection: HTMLElement = selectQuery(".index__container");
 
-function showTextToCanvas(event: InputEvent) {
-  resetAnimation();
-
-  //We make the changes here
-
-  //
-
-  resetEffect();
-  animate();
-}
-
 const mouseMapInfos: Map<string, number> = new Map();
 
 const mapInputsInfosForText: Map<string, any> = new Map();
@@ -99,6 +88,12 @@ function initializeInputs(): void {
 }
 initializeInputs();
 
+/**
+ * Sets the mouse radius value in the mouseMapInfos map.
+ *
+ * @param {Event} event - The input event.
+ * @returns {void}
+ */
 function setMouseRadius(event: Event) {
   setInputRangeValueToLabel(event);
 
@@ -108,6 +103,12 @@ function setMouseRadius(event: Event) {
   mouseMapInfos.set("radius", inputValue);
 }
 
+/**
+ * Sets the input range value to the corresponding label element.
+ *
+ * @param {Event} event - The input event.
+ * @returns {void}
+ */
 function setInputRangeValueToLabel(event: Event) {
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
@@ -178,6 +179,12 @@ function setMapValues(event: Event): void {
   animate();
 }
 
+/**
+ * Sets the background color of the color input and updates corresponding elements based on the input value.
+ *
+ * @param {Event} event - The input event.
+ * @returns {void}
+ */
 function setBackgroundToColorInput(event: Event): void {
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
@@ -314,11 +321,21 @@ function cancelAnimation(): void {
   clearOldPaint(context, canvas.width, canvas.height);
 }
 
+/**
+ * Resets the animation by canceling it and resetting the effect.
+ *
+ * @returns {void}
+ */
 function resetAnimation() {
   cancelAnimation();
   effect.reset();
 }
 
+/**
+ * Resets the effect by creating a new PixelEffect instance with the provided parameters.
+ *
+ * @returns {void}
+ */
 function resetEffect() {
   log(mapInputsInfosForText);
   effect = effect = new PixelEffect(

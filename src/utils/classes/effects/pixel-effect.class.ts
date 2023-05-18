@@ -111,6 +111,18 @@ export class PixelEffect {
    */
   pixelResolution: number;
 
+  /**
+   * Creates an instance of the PixelEffect class.
+   *
+   * @param {HTMLCanvasElement} canvas - The HTML canvas element on which the effect is applied.
+   * @param {string} text - The text that is used as the source of the pixels for the animation.
+   * @param {string} textColor - The color of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @param {string} fontFamily - The font family of the text.
+   * @param {string} [strokeColor="transparent"] - The stroke color of the text.
+   * @param {number} [strokeWidth] - The stroke width of the text.
+   * @param {number} [pixelResolution] - The pixel resolution of the text.
+   */
   constructor(
     canvas: HTMLCanvasElement,
     text: string,
@@ -248,6 +260,7 @@ export class PixelEffect {
       }
     }
 
+    // 3) Rendering the remaining line
     /*
     We render the remainig content of the line
     */
