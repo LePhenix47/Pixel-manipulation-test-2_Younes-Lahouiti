@@ -1,5 +1,6 @@
 import { clearOldPaint, get2DContext } from "../../functions/canvas.functions";
 import { log } from "../../functions/console.functions";
+import { splitString } from "../../functions/string.functions";
 import { PixelParticle } from "../particles/pixel-particle.class";
 
 /**
@@ -135,6 +136,12 @@ export class PixelEffect {
     this.particlesArray = [];
     this.text = text;
 
+    const hasNoLetters: boolean = this.text.length === 0;
+    log({ hasNoLetters });
+    if (hasNoLetters) {
+      return;
+    }
+
     this.textColor = textColor;
     this.fontSize = fontSize;
     this.fontFamily = fontFamily;
@@ -144,7 +151,8 @@ export class PixelEffect {
 
     this.pixelResolution = pixelResolution;
 
-    this.createText();
+    this.wrapText();
+    // this.drawTextToCanvas();
     this.convertToPixels(this.pixelResolution);
   }
 
@@ -153,7 +161,7 @@ export class PixelEffect {
    *
    * @returns {void}
    */
-  private createText(): void {
+  private drawTextToCanvas(): void {
     this.context.fillStyle = this.textColor;
     this.context.strokeStyle = this.strokeColor;
 
@@ -176,6 +184,60 @@ export class PixelEffect {
       this.canvas.height
     );
   }
+
+  /**
+   * Wraps the text within the canvas horizontally if it overflows.
+   *
+   * @param {number} maxWidth - The maximum width of the text before wrapping.
+   * @returns {void}
+   */
+  private wrapText(maxWidth: number = this.canvas.width): void {
+    const words: string[] = splitString(this.text, " ");
+    let line: string = "";
+
+    this.context.fillStyle = this.textColor;
+    this.context.strokeStyle = this.strokeColor;
+
+    this.context.font = `${this.fontSize}px ${this.fontFamily}`;
+
+    this.textMetrics = this.context.measureText(this.text);
+
+    this.textX = this.canvas.width / 2 - this.textMetrics.width / 2;
+    this.textY = this.canvas.height / 2;
+
+    this.context.lineWidth = this.strokeWidth;
+
+    for (let i = 0; i < words.length; i++) {
+      const testLine: string = line + words[i] + " ";
+      const metrics: TextMetrics = this.context.measureText(testLine);
+      const testWidth: number = metrics.width;
+
+      const overflowsHorizontally = testWidth > maxWidth;
+      const isNotFirstWord = i > 0;
+      if (overflowsHorizontally && isNotFirstWord) {
+        this.textX = this.canvas.width / 2;
+        this.textY = this.canvas.height / 2;
+
+        this.context.fillText(line, this.textX, this.textY);
+        this.context.strokeText(line, this.textX, this.textY);
+
+        line = words[i] + " ";
+        this.textY += this.fontSize;
+      } else {
+        line = testLine;
+      }
+    }
+    this.context.fillText(line, this.textX, this.textY);
+    this.context.strokeText(line, this.textX, this.textY);
+
+    this.pixelsData = this.context.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
+  }
+
   /**
    * Animates the pixels of the canvas.
    *  @returns {void}

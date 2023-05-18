@@ -13,6 +13,7 @@ import {
   selectQueryAll,
   setStyleProperty,
 } from "./utils/functions/dom.functions";
+import { formatSignificantDigitsNumber } from "./utils/functions/internalization.functions";
 import { logarithm } from "./utils/functions/number.functions";
 import {
   formatText,
@@ -54,6 +55,10 @@ const inputText: HTMLInputElement = selectQuery("input#text");
 const inputRangeForMouseRadius: HTMLInputElement =
   selectQuery("input#mouse-radius");
 
+const inputRangeForPixelResolution: HTMLInputElement = selectQuery(
+  "input#pixel-resolution"
+);
+
 const colorInputsArrray: HTMLInputElement[] = selectQueryAll(
   ".index__input--color"
 );
@@ -72,6 +77,10 @@ function initializeInputs(): void {
   inputText.addEventListener("input", setMapValues);
 
   inputRangeForMouseRadius.addEventListener("input", setMouseRadius);
+  inputRangeForPixelResolution.addEventListener(
+    "input",
+    setInputRangeValueToLabel
+  );
 
   //We add the event listenres for the controls for change for performance reasons
   for (const input of inputsArray) {
@@ -90,7 +99,27 @@ function initializeInputs(): void {
 }
 initializeInputs();
 
-function setMouseRadius(event) {}
+function setMouseRadius(event: Event) {
+  setInputRangeValueToLabel(event);
+
+  //@ts-ignore
+  const inputValue = event.target.value;
+
+  mouseMapInfos.set("radius", inputValue);
+}
+
+function setInputRangeValueToLabel(event: Event) {
+  //@ts-ignore
+  const input: HTMLInputElement = event.currentTarget;
+  let inputValue: number = Number(input.value);
+
+  const formattedInputValue: string = formatSignificantDigitsNumber(inputValue);
+
+  const label: HTMLLabelElement = getParent(input);
+  const spanLabel = selectQuery("span", label);
+
+  spanLabel.textContent = formattedInputValue;
+}
 
 /**
  * Sets the background color of the input element based on its current value.
@@ -118,11 +147,6 @@ function setMapValues(event: Event): void {
     ? Number(input.value)
     : input.value;
 
-  // const shouldBeTransparent: boolean = isColorInput && !showCheckbox.checked;
-
-  // if (shouldBeTransparent) {
-  //   inputValue = "transparent";
-  // }
   const isNotCheckboxInput: boolean = input.type !== "checkbox";
   log({ isNotCheckboxInput });
 
