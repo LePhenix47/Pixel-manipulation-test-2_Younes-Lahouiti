@@ -111,15 +111,6 @@ export class PixelEffect {
    */
   pixelResolution: number;
 
-  /**
-   * Creates an instance of the PixelEffect class.
-   *
-   * @param {HTMLCanvasElement} canvas - The HTML canvas element on which the effect is applied.
-   * @param {string} text - The text that is used as the source of the pixels for the animation.
-   * @param {string} color - The color of the text.
-   * @param {number} fontSize - The font size of the text.
-   * @param {string} fontFamily - The font family of the text.
-   */
   constructor(
     canvas: HTMLCanvasElement,
     text: string,
@@ -192,30 +183,55 @@ export class PixelEffect {
    * @returns {void}
    */
   private wrapText(maxWidth: number = this.canvas.width): void {
-    const words: string[] = splitString(this.text, " ");
-    let line: string = "";
-
+    //We set the fill and the stroke of the text
     this.context.fillStyle = this.textColor;
     this.context.strokeStyle = this.strokeColor;
 
+    //We set the font
     this.context.font = `${this.fontSize}px ${this.fontFamily}`;
 
+    //We set the text metric
     this.textMetrics = this.context.measureText(this.text);
 
+    //We set the cooridnates of our text
     this.textX = this.canvas.width / 2 - this.textMetrics.width / 2;
     this.textY = this.canvas.height / 2;
 
+    //We set the stroke width/thickness
     this.context.lineWidth = this.strokeWidth;
 
+    //We split the character on every space
+    const words: string[] = splitString(this.text, " ");
+
+    //We're going to use this variables to store the current line of text we're building
+    let line: string = "";
+
+    //We loop through each word
     for (let i = 0; i < words.length; i++) {
+      // 1) Building the test line
+      /*
+      We create a test line by concatenating the current word with the existing line
+      Then get its width 
+      */
       const testLine: string = line + words[i] + " ";
       const metrics: TextMetrics = this.context.measureText(testLine);
       const testWidth: number = metrics.width;
 
+      // 2) Checking a line overflow
+
+      /*
+      We check if the test width > canvas width and that it's not the 1st word
+      */
       const overflowsHorizontally = testWidth > maxWidth;
       const isNotFirstWord = i > 0;
       if (overflowsHorizontally && isNotFirstWord) {
-        this.textX = this.canvas.width / 2;
+        /*
+        If it does then we render the current line with the methods then
+        assign the current word as the start of a new line by setting it to the line variable 
+
+        Finally we update the textY position to the next line by adding it to the fontSize
+        */
+        this.textX = this.canvas.width / 2 - testWidth / 2;
         this.textY = this.canvas.height / 2;
 
         this.context.fillText(line, this.textX, this.textY);
@@ -224,9 +240,17 @@ export class PixelEffect {
         line = words[i] + " ";
         this.textY += this.fontSize;
       } else {
+        /*
+        If not then just update the line with 
+        the test line since it can accomodate the current word
+        */
         line = testLine;
       }
     }
+
+    /*
+    We render the remainig content of the line
+    */
     this.context.fillText(line, this.textX, this.textY);
     this.context.strokeText(line, this.textX, this.textY);
 
