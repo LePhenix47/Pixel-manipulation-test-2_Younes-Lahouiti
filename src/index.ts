@@ -7,6 +7,7 @@ import { log } from "./utils/functions/console.functions";
 import {
   getAncestor,
   getAttribute,
+  getChildren,
   getParent,
   selectQuery,
   selectQueryAll,
@@ -56,6 +57,10 @@ const colorInputsArrray: HTMLInputElement[] = selectQueryAll(
   ".index__input--color"
 );
 
+const checkboxInputsArray: HTMLInputElement[] = selectQueryAll(
+  ".index__input--checkbox"
+);
+
 /**
  * Initializes the color input elements by adding an "input" event listener to each input.
  *
@@ -70,6 +75,11 @@ function initializeInputs(): void {
   //We add the event listenres for the controls for change for performance reasons
   for (const input of inputsArray) {
     input.addEventListener("change", setMapValues);
+  }
+
+  //We add the event listenres for the controls for change for performance reasons
+  for (const checkboxInput of checkboxInputsArray) {
+    checkboxInput.addEventListener("change", setMapValues);
   }
 
   //We add event listeners to color swatch inputs to set their color
@@ -107,15 +117,36 @@ function setMapValues(event: Event): void {
     ? Number(input.value)
     : input.value;
 
-  const showLabel: HTMLLabelElement = labels[0];
-  const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
+  // const shouldBeTransparent: boolean = isColorInput && !showCheckbox.checked;
 
-  const isColorInput: boolean = input.type === "color";
-  const shouldBeTransparent: boolean = isColorInput && !showCheckbox.checked;
+  // if (shouldBeTransparent) {
+  //   inputValue = "transparent";
+  // }
+  const isNotCheckboxInput: boolean = input.type !== "checkbox";
+  log({ isNotCheckboxInput });
 
-  if (shouldBeTransparent) {
-    inputValue = "transparent";
+  if (isNotCheckboxInput) {
+    mapInputsInfosForText.set(formattedNameOfInput, inputValue);
+
+    resetEffect();
+    animate();
+    return;
   }
+
+  const colorLabel: HTMLLabelElement = labels[1];
+  const labelSpan: HTMLSpanElement = selectQuery("span", colorLabel);
+
+  const isNotChecked: boolean = !input.checked;
+  log({ isNotChecked });
+  if (isNotChecked) {
+    inputValue = "transparent";
+  } else {
+    inputValue = labelSpan.innerText;
+  }
+
+  const colorInput: HTMLInputElement = getChildren(colorLabel)[1];
+  formattedNameOfInput = kebabToCamelCase(colorInput.name);
+  log({ colorInput });
   mapInputsInfosForText.set(formattedNameOfInput, inputValue);
 
   resetEffect();
