@@ -164,6 +164,8 @@ export class PixelEffect {
     this.textX = this.canvas.width / 2 - this.textMetrics.width / 2;
     this.textY = this.canvas.height / 2 + this.fontSize / 2;
 
+    this.context.lineWidth = this.strokeWidth;
+
     this.context.fillText(this.text, this.textX, this.textY);
     this.context.strokeText(this.text, this.textX, this.textY);
 
