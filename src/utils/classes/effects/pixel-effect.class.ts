@@ -146,7 +146,6 @@ export class PixelEffect {
 
     this.createText();
     this.convertToPixels(this.pixelResolution);
-    // log(this);
   }
 
   /**
@@ -167,7 +166,6 @@ export class PixelEffect {
 
     this.context.fillText(this.text, this.textX, this.textY);
     this.context.strokeText(this.text, this.textX, this.textY);
-    log(this.context);
 
     this.pixelsData = this.context.getImageData(
       0,
@@ -197,7 +195,6 @@ export class PixelEffect {
   private convertToPixels(cellSize: number = 1): void {
     //We remove the static image on our <canvas>
     clearOldPaint(this.context, this.canvas.width, this.canvas.height);
-    log(this.pixelsData);
 
     for (let y = 0; y < this.pixelsData.height; y += cellSize) {
       for (let x = 0; x < this.pixelsData.width; x += cellSize) {

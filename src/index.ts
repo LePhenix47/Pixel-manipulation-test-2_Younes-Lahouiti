@@ -19,13 +19,6 @@ import {
 } from "./utils/functions/string.functions";
 import { arrayOfKeyPairs } from "./utils/variables/inputs-map.variables";
 
-/**
- * Logs a message to the console.
- *
- * @param {string} message - The message to log.
- */
-log("Hello world!");
-
 const canvas: HTMLCanvasElement = selectQuery("canvas");
 const context: CanvasRenderingContext2D = get2DContext(canvas, {
   willReadFrequently: true,
@@ -62,8 +55,6 @@ const inputRangeForMouseRadius: HTMLInputElement =
 const colorInputsArrray: HTMLInputElement[] = selectQueryAll(
   ".index__input--color"
 );
-
-log(inputsArray, colorInputsArrray, { inputRangeForMouseRadius });
 
 /**
  * Initializes the color input elements by adding an "input" event listener to each input.
@@ -102,12 +93,29 @@ function setMapValues(event: Event): void {
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
 
-  const formattedNameOfInput: string = kebabToCamelCase(input.name);
+  const container: HTMLElement = getAncestor(
+    input,
+    ".index__color-input-container"
+  );
+
+  const labels: HTMLLabelElement[] = selectQueryAll("label", container);
+
+  let formattedNameOfInput: string = kebabToCamelCase(input.name);
+
   //@ts-ignore
-  const inputValue = !isNaN(Number(input.value))
+  let inputValue: string | number = !isNaN(Number(input.value))
     ? Number(input.value)
     : input.value;
 
+  const showLabel: HTMLLabelElement = labels[0];
+  const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
+
+  const isColorInput: boolean = input.type === "color";
+  const shouldBeTransparent: boolean = isColorInput && !showCheckbox.checked;
+
+  if (shouldBeTransparent) {
+    inputValue = "transparent";
+  }
   mapInputsInfosForText.set(formattedNameOfInput, inputValue);
 
   resetEffect();
@@ -125,9 +133,6 @@ function setBackgroundToColorInput(event: Event): void {
 
   const labels: HTMLLabelElement[] = selectQueryAll("label", container);
 
-  const showLabel: HTMLLabelElement = labels[0];
-  const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
-
   const colorLabel: HTMLLabelElement = labels[1];
   const colorLabelType: string = splitString(colorLabel.innerText, ":")[0];
 
@@ -140,29 +145,30 @@ function setBackgroundToColorInput(event: Event): void {
 
   spanLabel.textContent = formattedInputValue;
 
-  const shouldBeTransparent: boolean = !showCheckbox.checked;
-
-  if (shouldBeTransparent) {
-    formattedInputValue = "transparent";
-  }
-
   setStyleProperty("--bg-input-color", formattedInputValue, input);
 
   switch (colorLabelType) {
     case "Canvas background": {
+      const showLabel: HTMLLabelElement = labels[0];
+      const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
+
+      const shouldBeTransparent: boolean = !showCheckbox.checked;
+
+      if (shouldBeTransparent) {
+        formattedInputValue = "transparent";
+      }
+
       setStyleProperty("--bg-input-color", formattedInputValue, input);
       setStyleProperty("--bg-canvas", formattedInputValue, canvas);
       break;
     }
 
     case "Fill": {
-      mapInputsInfosForText.set("fill", formattedInputValue);
       setStyleProperty("--bg-input-color", formattedInputValue, input);
       break;
     }
 
     case "Stroke color": {
-      mapInputsInfosForText.set("strokeColor", formattedInputValue);
       setStyleProperty("--bg-input-color", formattedInputValue, input);
       break;
     }
@@ -200,6 +206,7 @@ canvas.height = containerSection.clientHeight;
 function handleWindowResize(): void {
   canvas.width = containerSection.clientWidth;
   canvas.height = containerSection.clientHeight;
+  resetEffect();
 }
 handleWindowResize();
 
@@ -257,6 +264,7 @@ function resetAnimation() {
 }
 
 function resetEffect() {
+  log(mapInputsInfosForText);
   effect = effect = new PixelEffect(
     canvas,
     mapInputsInfosForText.get("text"),
