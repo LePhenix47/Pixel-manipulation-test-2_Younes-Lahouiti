@@ -22,9 +22,6 @@
     &__input-controls {
         @include grid(2, 3, 15px);
 
-        & label {
-            border: 2px solid red;
-        }
     }
 
     &__form {
@@ -43,6 +40,7 @@
     &__input {
         --border-color: rgb(59, 59, 59);
         border: 2px solid var(--border-color);
+        padding: 10px 15px;
 
         &:focus {
             outline: 2px solid var(--border-color);
@@ -50,20 +48,29 @@
 
         &--number {
             @include input-number-style;
+
+
         }
 
         &--color {
             --bg-input-color: white;
             background-color: var(--bg-input-color);
             @include input-color-style;
+
+
         }
 
         &--range {
-            @include input-range-style
+            @include input-range-style;
+            padding: 0;
         }
+
+        &--text {}
     }
 
-    &__select {}
+    &__select {
+        padding: 10px 15px;
+    }
 
     &__options {}
 
@@ -76,6 +83,8 @@
 
         outline: 2px solid currentColor;
         border-radius: 10px;
+
+
     }
 
     &__canvas {

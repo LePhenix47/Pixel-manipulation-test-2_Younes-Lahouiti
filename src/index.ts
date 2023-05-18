@@ -5,6 +5,8 @@ import {
 } from "./utils/functions/canvas.functions";
 import { log } from "./utils/functions/console.functions";
 import {
+  getAncestor,
+  getAttribute,
   getParent,
   selectQuery,
   selectQueryAll,
@@ -46,13 +48,22 @@ const mouseMapInfos: Map<string, number> = new Map();
 
 const mapInputsInfosForText: Map<string, any> = new Map();
 
-const selectElement: HTMLSelectElement = selectQuery(".index__select");
+const selectFontHTMLElement: HTMLSelectElement = selectQuery(".index__select");
 
-const allInputs: HTMLInputElement[] = selectQueryAll(
-  ".index__input:not(input#mouse-radius)"
-).concat(selectElement);
+const inputsArray: HTMLInputElement[] = selectQueryAll(
+  ".index__input:not(input#mouse-radius, input#text)"
+).concat(selectFontHTMLElement);
 
-log(allInputs);
+const inputText: HTMLInputElement = selectQuery("input#text");
+
+const inputRangeForMouseRadius: HTMLInputElement =
+  selectQuery("input#mouse-radius");
+
+const colorInputsArrray: HTMLInputElement[] = selectQueryAll(
+  ".index__input--color"
+);
+
+log(inputsArray, colorInputsArrray, { inputRangeForMouseRadius });
 
 /**
  * Initializes the color input elements by adding an "input" event listener to each input.
@@ -60,11 +71,24 @@ log(allInputs);
  * @returns {void}
  */
 function initializeInputs(): void {
-  for (const input of allInputs) {
+  //We add the event listener to listen to inputs on the text
+  inputText.addEventListener("input", setMapValues);
+
+  inputRangeForMouseRadius.addEventListener("input", setMouseRadius);
+
+  //We add the event listenres for the controls for change for performance reasons
+  for (const input of inputsArray) {
     input.addEventListener("change", setMapValues);
+  }
+
+  //We add event listeners to color swatch inputs to set their color
+  for (const colorInput of colorInputsArrray) {
+    colorInput.addEventListener("input", setBackgroundToColorInput);
   }
 }
 initializeInputs();
+
+function setMouseRadius(event) {}
 
 /**
  * Sets the background color of the input element based on its current value.
@@ -84,19 +108,7 @@ function setMapValues(event: Event): void {
     ? Number(input.value)
     : input.value;
 
-  switch (formattedNameOfInput) {
-    case "fill":
-    case "strokeColor":
-    case "canvasBackground": {
-      setBackgroundToColorInput(event);
-      break;
-    }
-
-    default: {
-      mapInputsInfosForText.set(formattedNameOfInput, inputValue);
-      break;
-    }
-  }
+  mapInputsInfosForText.set(formattedNameOfInput, inputValue);
 
   resetEffect();
   animate();
@@ -105,20 +117,38 @@ function setMapValues(event: Event): void {
 function setBackgroundToColorInput(event: Event): void {
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
-  //@ts-ignore
-  const label: HTMLLabelElement = getParent(input);
-  const labelType: string = splitString(label.innerText, ":")[0];
 
-  //@ts-ignore
-  const formattedInputValue: string = formatText(input.value, "uppercase");
+  const container: HTMLElement = getAncestor(
+    input,
+    ".index__color-input-container"
+  );
 
-  const spanLabel: HTMLSpanElement = selectQuery(".index__label-span", label);
-  //@ts-ignore
+  const labels: HTMLLabelElement[] = selectQueryAll("label", container);
+
+  const showLabel: HTMLLabelElement = labels[0];
+  const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
+
+  const colorLabel: HTMLLabelElement = labels[1];
+  const colorLabelType: string = splitString(colorLabel.innerText, ":")[0];
+
+  let formattedInputValue: string = formatText(input.value, "uppercase");
+
+  const spanLabel: HTMLSpanElement = selectQuery(
+    ".index__label-span",
+    colorLabel
+  );
+
   spanLabel.textContent = formattedInputValue;
-  //@ts-ignore
+
+  const shouldBeTransparent: boolean = !showCheckbox.checked;
+
+  if (shouldBeTransparent) {
+    formattedInputValue = "transparent";
+  }
+
   setStyleProperty("--bg-input-color", formattedInputValue, input);
 
-  switch (labelType) {
+  switch (colorLabelType) {
     case "Canvas background": {
       setStyleProperty("--bg-input-color", formattedInputValue, input);
       setStyleProperty("--bg-canvas", formattedInputValue, canvas);

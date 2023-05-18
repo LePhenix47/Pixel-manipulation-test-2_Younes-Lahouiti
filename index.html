@@ -49,7 +49,8 @@
         <section class="index__controls">
             <form class="index__form">
                 <label for="text" class="index__label">Type to show on canvas: </label>
-                <input type="text" name="text" id="text" class="index__input" placeholder="Hello world!">
+                <input type="text" name="text" id="text" class="index__input index__input--text"
+                    placeholder="Hello world!">
 
                 <label class="index__label" for="font-family">Select a Font Family:
                     <select class="index__select" id="font-family" name="family">
@@ -76,33 +77,58 @@
                 <div class="index__input-controls">
 
                     <label class="index__label" for="font-size">Font size:
-                        <input type="number" id="font-size" class="index__input index__input--number" min="1" max="128"
-                            step="1" name="size" />
+                        <input type="number" placeholder="ex: 64" id="font-size"
+                            class="index__input index__input--number" min="1" max="128" step="1" name="size" />
                     </label>
 
 
-                    <label class="index__label" for="font-fill">Fill: <span class="index__label-span">#FFFFFF</span>
-                        <input type="color" id="font-fill" class="index__input index__input--color" value="#ffffff"
-                            name="fill" />
-                    </label>
+                    <div class="index__color-input-container">
+                        <label class="index__label" for="fill-checkbox">
+
+                            Show? <input type="checkbox" name="fill-checkbox" id="fill-checkbox"
+                                class="index__input index__input--checkbox">
+                        </label>
+                        <label class="index__label" for="font-fill">Fill: <span class="index__label-span">#FFFFFF</span>
 
 
-                    <label class="index__label" for="font-stroke">Stroke color: <span
-                            class="index__label-span">#000000</span>
-                        <input type="color" id="font-stroke" class="index__input index__input--color" value="#000000"
-                            style="--bg-input-color: #000000" name="stroke-color" />
-                    </label>
+                            <input type="color" id="font-fill" class="index__input index__input--color" value="#ffffff"
+                                name="fill" />
+                        </label>
+                    </div>
+
+
+                    <div class="index__color-input-container">
+                        <label class="index__label" for="stroke-checkbox">
+
+                            Show? <input type="checkbox" name="stroke-checkbox" id="stroke-checkbox"
+                                class="index__input index__input--checkbox">
+                        </label>
+                        <label class="index__label" for="font-stroke">Stroke color: <span
+                                class="index__label-span">#000000</span>
+
+                            <input type="color" id="font-stroke" class="index__input index__input--color"
+                                value="#000000" style="--bg-input-color: #000000" name="stroke-color" />
+                        </label>
+                    </div>
 
                     <label class="index__label" for="font-stroke-thickness">Stroke thickness:
-                        <input type="number" id="font-stroke-thickness" class="index__input index__input--number"
-                            min="0" max="128" step="1" name="stroke-width" />
+                        <input type="number" placeholder="ex: 10" id="font-stroke-thickness"
+                            class="index__input index__input--number" min="0" max="128" step="1" name="stroke-width" />
                     </label>
 
-                    <label class="index__label" for="canvas-background">Canvas background: <span
-                            class="index__label-span">#000000</span>
-                        <input type="color" id="canvas-background" class="index__input index__input--color"
-                            value="#000000" style="--bg-input-color: #000000" name="canvas-background" />
-                    </label>
+                    <div class="index__color-input-container">
+                        <label class="index__label" for="canvas-background-checkbox">
+                            Show?
+                            <input type="checkbox" name="canvas-background-checkbox" id="canvas-background-checkbox"
+                                class="index__input index__input--checkbox">
+                        </label>
+                        <label class="index__label" for="canvas-background">Canvas background: <span
+                                class="index__label-span">#000000</span>
+
+                            <input type="color" id="canvas-background" class="index__input index__input--color"
+                                value="#000000" style="--bg-input-color: #000000" name="canvas-background" />
+                        </label>
+                    </div>
 
                 </div>
 
