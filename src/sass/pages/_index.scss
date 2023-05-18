@@ -37,12 +37,22 @@
         gap: 15px;
 
         &--checkbox {
+            position: relative;
+
+            &::after {
+                content: "";
+                aspect-ratio: 1/1;
+                height: 15px;
+
+                outline: 2px solid currentColor;
+            }
+
             &:has(>input:checked)::after {
-                content: "on";
+                background-color: #005cc8;
             }
 
             &:has(>input:not(:checked))::after {
-                content: "off";
+                background-color: var(--bg-primary);
             }
         }
     }

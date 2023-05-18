@@ -3,7 +3,7 @@ import {
   clearOldPaint,
   get2DContext,
 } from "./utils/functions/canvas.functions";
-import { log } from "./utils/functions/console.functions";
+import { error, log } from "./utils/functions/console.functions";
 import {
   getAncestor,
   getAttribute,
@@ -13,6 +13,7 @@ import {
   selectQueryAll,
   setStyleProperty,
 } from "./utils/functions/dom.functions";
+import { logarithm } from "./utils/functions/number.functions";
 import {
   formatText,
   kebabToCamelCase,

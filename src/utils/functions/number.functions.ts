@@ -56,7 +56,7 @@ export function nthRoot(value: number, base: number = 2): number {
   if (rootIsInvalid) {
     // Negative values cannot have an even root
     //∛(-27) = 3 but √(-16) = undefined
-    error("The base passed of the logarithm is invalid");
+    error("The base of the root passed is invalid");
     return NaN;
   }
 
@@ -113,12 +113,18 @@ export function getColorBrightness(
   green: number,
   hasToBeExact: boolean = true
 ): number {
+  const hasInvalidRGBValues: boolean =
+    red < 0 || red > 255 || blue < 0 || blue > 255 || green < 0 || green > 255;
+
+  if (hasInvalidRGBValues) {
+    throw "Unexpected error: One or multiple RGB values are overflowing or underflowing";
+  }
+
   if (hasToBeExact) {
-    const brightness: number =
-      0.2126 * (red % 256) + 0.7152 * (green % 256) + 0.0722 * (blue % 256);
+    const brightness: number = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
 
     return brightness;
   }
 
-  return ((red % 256) + (green % 256) + (blue % 256)) / 3;
+  return (red + green + blue) / 3;
 }
