@@ -14,7 +14,7 @@ import {
   setStyleProperty,
 } from "./utils/functions/dom.functions";
 import { formatSignificantDigitsNumber } from "./utils/functions/internalization.functions";
-import { logarithm } from "./utils/functions/number.functions";
+
 import {
   formatText,
   kebabToCamelCase,
@@ -36,7 +36,7 @@ const mapInputsInfosForText: Map<string, any> = new Map();
 const selectFontHTMLElement: HTMLSelectElement = selectQuery(".index__select");
 
 const inputsArray: HTMLInputElement[] = selectQueryAll(
-  ".index__input:not(input#mouse-radius, input#text)"
+  ".index__input:not(input#mouse-radius, input#text, input#canvas-background-checkbox)"
 ).concat(selectFontHTMLElement);
 
 const inputText: HTMLInputElement = selectQuery("input#text");
@@ -53,7 +53,11 @@ const colorInputsArrray: HTMLInputElement[] = selectQueryAll(
 );
 
 const checkboxInputsArray: HTMLInputElement[] = selectQueryAll(
-  ".index__input--checkbox"
+  ".index__input--checkbox:not(input#canvas-background-checkbox)"
+);
+
+const canvasCheckboxInput: HTMLInputElement = selectQuery(
+  "input#canvas-background-checkbox"
 );
 
 /**
@@ -80,6 +84,7 @@ function initializeInputs(): void {
   for (const checkboxInput of checkboxInputsArray) {
     checkboxInput.addEventListener("change", setMapValues);
   }
+  canvasCheckboxInput.addEventListener("change", setCanvasTransparency);
 
   //We add event listeners to color swatch inputs to set their color
   for (const colorInput of colorInputsArrray) {
@@ -88,17 +93,44 @@ function initializeInputs(): void {
 }
 initializeInputs();
 
+function setCanvasTransparency(event: Event) {
+  log("Canvas input change");
+  //@ts-ignore
+  const input: HTMLInputElement = event.currentTarget;
+
+  const fieldset: HTMLFieldSetElement = getAncestor(
+    input,
+    ".index__color-input-container"
+  );
+  const label: HTMLLabelElement = selectQuery(
+    ".index__label:not(.index__label--checkbox)",
+    fieldset
+  );
+
+  const spanLabel: HTMLSpanElement = selectQuery("span", label);
+  const formattedInputValue: string = spanLabel.innerText;
+
+  const isChecked: boolean = input.checked;
+  if (isChecked) {
+    setStyleProperty("--bg-canvas", formattedInputValue, canvas);
+  } else {
+    setStyleProperty("--bg-canvas", "transparent", canvas);
+  }
+
+  log("Span: ", spanLabel.innerText);
+}
+
 /**
  * Sets the mouse radius value in the mouseMapInfos map.
  *
  * @param {Event} event - The input event.
  * @returns {void}
  */
-function setMouseRadius(event: Event) {
+function setMouseRadius(event: Event): void {
   setInputRangeValueToLabel(event);
 
   //@ts-ignore
-  const inputValue = event.target.value;
+  const inputValue: number = Number(event.target.value);
 
   mouseMapInfos.set("radius", inputValue);
 }
@@ -109,7 +141,7 @@ function setMouseRadius(event: Event) {
  * @param {Event} event - The input event.
  * @returns {void}
  */
-function setInputRangeValueToLabel(event: Event) {
+function setInputRangeValueToLabel(event: Event): void {
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
   let inputValue: number = Number(input.value);
@@ -117,7 +149,7 @@ function setInputRangeValueToLabel(event: Event) {
   const formattedInputValue: string = formatSignificantDigitsNumber(inputValue);
 
   const label: HTMLLabelElement = getParent(input);
-  const spanLabel = selectQuery("span", label);
+  const spanLabel: HTMLSpanElement = selectQuery("span", label);
 
   spanLabel.textContent = formattedInputValue;
 }
@@ -130,7 +162,7 @@ function setInputRangeValueToLabel(event: Event) {
  */
 function setMapValues(event: Event): void {
   resetAnimation();
-
+  log("change!");
   //@ts-ignore
   const input: HTMLInputElement = event.currentTarget;
 
@@ -149,7 +181,6 @@ function setMapValues(event: Event): void {
     : input.value;
 
   const isNotCheckboxInput: boolean = input.type !== "checkbox";
-  log({ isNotCheckboxInput });
 
   if (isNotCheckboxInput) {
     mapInputsInfosForText.set(formattedNameOfInput, inputValue);
@@ -163,7 +194,7 @@ function setMapValues(event: Event): void {
   const labelSpan: HTMLSpanElement = selectQuery("span", colorLabel);
 
   const isNotChecked: boolean = !input.checked;
-  log({ isNotChecked });
+
   if (isNotChecked) {
     inputValue = "transparent";
   } else {
@@ -172,7 +203,7 @@ function setMapValues(event: Event): void {
 
   const colorInput: HTMLInputElement = getChildren(colorLabel)[1];
   formattedNameOfInput = kebabToCamelCase(colorInput.name);
-  log({ colorInput });
+
   mapInputsInfosForText.set(formattedNameOfInput, inputValue);
 
   resetEffect();
@@ -212,14 +243,14 @@ function setBackgroundToColorInput(event: Event): void {
 
   switch (colorLabelType) {
     case "Canvas background": {
-      const showLabel: HTMLLabelElement = labels[0];
-      const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
+      // const showLabel: HTMLLabelElement = labels[0];
+      // const showCheckbox: HTMLInputElement = selectQuery("input", showLabel);
 
-      const shouldBeTransparent: boolean = !showCheckbox.checked;
+      // const shouldBeTransparent: boolean = !showCheckbox.checked;
 
-      if (shouldBeTransparent) {
-        formattedInputValue = "transparent";
-      }
+      // if (shouldBeTransparent) {
+      //   formattedInputValue = "transparent";
+      // }
 
       setStyleProperty("--bg-input-color", formattedInputValue, input);
       setStyleProperty("--bg-canvas", formattedInputValue, canvas);
@@ -326,7 +357,7 @@ function cancelAnimation(): void {
  *
  * @returns {void}
  */
-function resetAnimation() {
+function resetAnimation(): void {
   cancelAnimation();
   effect.reset();
 }
@@ -336,8 +367,8 @@ function resetAnimation() {
  *
  * @returns {void}
  */
-function resetEffect() {
-  log(mapInputsInfosForText);
+function resetEffect(): void {
+  // log(mapInputsInfosForText);
   effect = effect = new PixelEffect(
     canvas,
     mapInputsInfosForText.get("text"),

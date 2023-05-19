@@ -20,8 +20,11 @@
     }
 
     &__input-controls {
-        @include grid(2, 3, 15px);
+        @include grid(2, 3, 35px);
 
+        &--top {
+            @include center-flex(25px);
+        }
     }
 
     &__form {
@@ -96,6 +99,9 @@
 
     &__select {
         padding: 10px 15px;
+
+        --border-color: rgb(59, 59, 59);
+        border: 2px solid var(--border-color);
     }
 
     &__options {}
@@ -111,6 +117,15 @@
         border-radius: 10px;
 
 
+    }
+
+    &__color-input-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+
+        gap: 15px;
     }
 
     &__canvas {

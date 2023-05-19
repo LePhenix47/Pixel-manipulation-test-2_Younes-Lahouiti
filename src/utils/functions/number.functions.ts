@@ -10,8 +10,8 @@ import { error } from "./console.functions";
  * @returns {number} A random number within the specified range.
  */
 export function getRandomNumber(
-  min: number,
-  max: number,
+  min: number = 0,
+  max: number = 1,
   includeMin: boolean = true,
   includeMax: boolean = true
 ): number {
@@ -56,11 +56,11 @@ export function nthRoot(value: number, base: number = 2): number {
   if (rootIsInvalid) {
     // Negative values cannot have an even root
     //∛(-27) = 3 but √(-16) = undefined
-    error("The base of the root passed is invalid");
+    error("The root of the value passed is invalid");
     return NaN;
   }
 
-  //ⁿ√(x) = x¹/ⁿ
+  //ⁿ√(x) = x^(1/n)
   return value ** (1 / base);
 }
 
@@ -71,21 +71,21 @@ export function nthRoot(value: number, base: number = 2): number {
  * @param {number} value - The value for which to calculate the logarithm.
  * @param {number} [base= Math.E] - The base of the logarithm. Default is Euler's number.
  *
- *  @returns {number} The logarithm of the value.
+ *  @returns {number | NaN} The logarithm of the value or Not A Number `NaN` if the arguments passed are invalid
  */
 export function logarithm(value: number, base: number = Math.E): number {
   //We check that the base is positive but also different than 1
   //since log(1) = 0 and logₙ(x) = log(x)/log(n), a base of 1 would give a division by 0
   const baseIsInvalid: boolean = base <= 0 || base === 1;
   if (baseIsInvalid) {
-    error("The base passed of the logarithm is invalid");
+    error("The base of the logarithm is invalid");
     return NaN;
   }
 
   //Logarithmic functions cannot have a negative or null value
   const valueIsInvalid: boolean = value <= 0;
   if (valueIsInvalid) {
-    error(`The value passed is negative or null!`);
+    error("The value passed is negative or null");
     return NaN;
   }
 
@@ -100,7 +100,7 @@ export function logarithm(value: number, base: number = Math.E): number {
  * @param {number} green - The green component of the color (0-255).
  * @param {boolean} hasToBeExact - Specifies whether the exact brightness should be calculated.
  *
- * If `true`, the formula [`(0.2126 × red + 0.7152 × green + 0.0722 × blue)`](https://en.wikipedia.org/wiki/Relative_luminance) is used.
+ * If `true`, the formula [relative luminance formula](https://en.wikipedia.org/wiki/Relative_luminance) is used.
  *
  * If `false`, the average of the RGB values is used.
  *
@@ -127,4 +127,8 @@ export function getColorBrightness(
   }
 
   return (red + green + blue) / 3;
+}
+
+export function getRandomHexadecimal() {
+  const number: number = getRandomNumber();
 }

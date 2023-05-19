@@ -213,7 +213,7 @@ export class PixelEffect {
     this.context.lineWidth = this.strokeWidth;
 
     //We center the text
-    // this.context.textAlign = "center";
+    this.context.textAlign = "start";
 
     //We split the character on every space
     const words: string[] = splitString(this.text, " ");

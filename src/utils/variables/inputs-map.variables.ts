@@ -16,7 +16,7 @@ export const arrayOfKeyPairs: (
   { key: "text", value: "" },
   { key: "family", value: "Consolas" },
   { key: "fill", value: "white" },
-  { key: "size", value: 32 },
+  { key: "size", value: 64 },
   { key: "strokeColor", value: "transparent" },
   { key: "strokeWidth", value: 1 },
   { key: "pixelResolution", value: 3 },
