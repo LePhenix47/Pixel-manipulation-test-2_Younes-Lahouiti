@@ -212,11 +212,16 @@ export class PixelEffect {
     //We set the stroke width/thickness
     this.context.lineWidth = this.strokeWidth;
 
+    //We center the text
+    // this.context.textAlign = "center";
+
     //We split the character on every space
     const words: string[] = splitString(this.text, " ");
 
     //We're going to use this variables to store the current line of text we're building
     let line: string = "";
+    let lineCounter: number = 0;
+    const linesArray: string[] = [];
 
     //We loop through each word
     for (let i = 0; i < words.length; i++) {
@@ -234,8 +239,8 @@ export class PixelEffect {
       /*
       We check if the test width > canvas width and that it's not the 1st word
       */
-      const overflowsHorizontally = testWidth > maxWidth;
-      const isNotFirstWord = i > 0;
+      const overflowsHorizontally: boolean = testWidth > maxWidth;
+      const isNotFirstWord: boolean = i > 0;
       if (overflowsHorizontally && isNotFirstWord) {
         /*
         If it does then we render the current line with the methods then
@@ -244,13 +249,15 @@ export class PixelEffect {
         Finally we update the textY position to the next line by adding it to the fontSize
         */
         this.textX = this.canvas.width / 2 - testWidth / 2;
-        this.textY = this.canvas.height / 2;
+        this.textY = this.canvas.height / 2 + this.fontSize / 2;
 
         this.context.fillText(line, this.textX, this.textY);
         this.context.strokeText(line, this.textX, this.textY);
 
         line = words[i] + " ";
         this.textY += this.fontSize;
+
+        lineCounter++;
       } else {
         /*
         If not then just update the line with 
@@ -258,12 +265,26 @@ export class PixelEffect {
         */
         line = testLine;
       }
+      linesArray[lineCounter] = line;
     }
-
     // 3) Rendering the remaining line
     /*
     We render the remainig content of the line
     */
+    // for (let i = 1; i < linesArray.length; i++) {
+    //   const remainingLine: string = linesArray[i];
+
+    //   this.context.fillText(
+    //     remainingLine,
+    //     this.textX,
+    //     this.textY + i * this.fontSize
+    //   );
+    //   this.context.strokeText(
+    //     remainingLine,
+    //     this.textX,
+    //     this.textY + i * this.fontSize
+    //   );
+    // }
     this.context.fillText(line, this.textX, this.textY);
     this.context.strokeText(line, this.textX, this.textY);
 
